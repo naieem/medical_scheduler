@@ -57,7 +57,7 @@ angular.module('ionicApp').controller('AppCtrl', function($rootScope, $scope, $i
     }
     $scope.add_entry = function(event) {
             event.preventDefault();
-            if ($scope.duty.place == undefined || $scope.duty.dte == undefined || $scope.duty.amount == undefined || $scope.duty.provider == undefined || $scope.duty.schedule == undefined) {
+            if ($scope.duty.place == undefined || $scope.duty.place == "" || $scope.duty.dte == undefined || $scope.duty.dte == "" || $scope.duty.amount == undefined || $scope.duty.amount == "" || $scope.duty.provider == undefined || $scope.duty.provider == "" || $scope.duty.schedule == undefined || $scope.duty.schedule == "") {
                 $cordovaToast.showShortBottom('Please Provide All Information To Add Schedule')
                     .then(
                         function(success) {},
@@ -154,7 +154,7 @@ angular.module('ionicApp').controller('AppCtrl', function($rootScope, $scope, $i
          */
     $scope.edit_entry = function(index) {
         console.log($scope.duties[index]);
-        if ($scope.edit_data.place == undefined || $scope.edit_data.dte == undefined || $scope.edit_data.amount == undefined || $scope.edit_data.provider == undefined || $scope.edit_data.schedule == undefined) {
+        if ($scope.edit_data.place == undefined || $scope.edit_data.place == "" || $scope.edit_data.dte == undefined || $scope.edit_data.dte == "" || $scope.edit_data.amount == undefined || $scope.edit_data.amount == "" || $scope.edit_data.provider == undefined || $scope.edit_data.provider == "" || $scope.edit_data.schedule == undefined || $scope.edit_data.schedule == "") {
             $cordovaToast.showShortBottom('Please Provide All Information To Add Schedule')
                 .then(
                     function(success) {},
