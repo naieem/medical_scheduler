@@ -1,0 +1,77 @@
+[ng\:cloak],
+[ng-cloak],
+[data-ng-cloak],
+[x-ng-cloak],
+.ng-cloak,
+.x-ng-cloak {
+    display: none !important;
+}
+
+.list {
+    padding-bottom: 85px !important;
+}
+
+input[type='text'],
+.list input[type='number'] {
+    padding: 0 10px !important;
+}
+
+.has-header {
+    background-image: url('../gb.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.item {
+    background-color: transparent !important;
+    color: #fff !important;
+    border: none !important;
+}
+
+.item-input {
+    padding-left: 0 !important;
+}
+
+.item h2,
+.item h1 {
+    color: #fff !important;
+    font-size: 16px !important;
+    white-space: normal !important;
+}
+
+.item-stacked-label .icon,
+.item-stacked-label .input-label {
+    color: #fff !important;
+}
+
+.card {
+    background-color: transparent !important;
+    color: #fff !important;
+}
+
+a.button {
+    color: #fff !important;
+}
+
+select {
+    padding: 10px 20px;
+    min-width: 40%;
+    border: none;
+    border-radius: 10px;
+}
+
+.popup-container .popup {
+    background-color: rgba(255, 255, 255, 1) !important;
+}
+
+#floating-menu {
+    bottom: 35px !important;
+}
+
+#floating-menu .icon.menu-icon {
+    background-color: #11c1f3 !important;
+}
+#floating-menu.active ion-floating-item >li{
+    background-color: #11c1f3 !important;
+}

@@ -1,0 +1,15 @@
+Welcome to Duty Scheduler for Doctors.
+This application will help doctors to keep their duty records and also calculate their earnings through duty. A dynamic search and calculate feature is added with this application. Doctors can search their duty schedule by month, year and also by the place or their duty. It will automatically calculate the earnings according to the search criteria and will show the exact result as expected. Another huge advantage of the application is doctors duty entry will automatically be scheduled. So doctors will get a notification of their duty with details in their notification bar at 12AM of the exact day of duty. It is very lightweight and easy to use. Interface is very simple but attractive. Hope doctors will get this app very much friendly to use.
+Features:
+1. Adding new schedule.
+2. Updating existing schedule
+3. Deleting unnecessary schedule
+4. A background schedule will automatically generate after a new duty date is created. Doctors will receive a notification on duty day at 12 AM informing that he/she has a duty today. It will also show him/her the duty place, provider name, amount of the duty and duty time.
+5. There is an earning calculator in the app. All earnings of the doctor will be calculated and shown in the home of the application. Calculations are automatically updated with filtering and searching.
+6. Filtering options are available for doctors. Doctors can filter their duties/schedules by selecting month and year. Example:
+a. If doctors want to filter their schedules by month they just have to select month name from the dropdown menu.
+b. If doctors want to filter their schedule by year they just have to select year name from the dropdown menu.
+c. If doctors want to filter their schedule by both year and month, they have to select both the month and year from the dropdown menu.
+Filters will automatically show expected list and earning calculation according to filter criteria
+7. This application has an awesome live search feature also. Doctors can search their schedule/duty by writing the hospital/place name they provided in the schedules while adding new schedule. Doctors have to write the search query in the search box in the top. It will automatically show the matched list of searched hospitals/place among the all schedules with earning calculation within the matched.
+8. Form validation feature with toast message while adding new schedules.
