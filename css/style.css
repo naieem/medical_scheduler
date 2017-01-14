@@ -56,9 +56,10 @@ a.button {
 
 select {
     padding: 10px 20px;
-    min-width: 40%;
+    width: 98%;
     border: none;
     border-radius: 10px;
+    margin-bottom: 20px;
 }
 
 .popup-container .popup {
@@ -72,6 +73,7 @@ select {
 #floating-menu .icon.menu-icon {
     background-color: #11c1f3 !important;
 }
-#floating-menu.active ion-floating-item >li{
+
+#floating-menu.active ion-floating-item >li {
     background-color: #11c1f3 !important;
 }
