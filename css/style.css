@@ -81,24 +81,28 @@ select {
     background-color: #11c1f3 !important;
 }
 
-.item h2.active {
+.item h2.active,.status-active {
     background: green;
-    padding: 10px;
+    padding: 5px;
     text-align: center;
     color: #fff !important;
     border-radius: 10px;
     border: none;
     margin-top: 10px;
-    text-transform: uppercase;
+    width: 100px;
 }
 
-.item h2.inactive {
+.item h2.inactive,.status-inactive {
     background: red;
-    padding: 10px;
+    padding: 5px;
     text-align: center;
     color: #fff !important;
     border-radius: 10px;
     border: none;
     margin-top: 10px;
-    text-transform: uppercase;
+    width: 100px;
+}
+
+.item h2.active,.item h2.inactive{
+    width: 100%;
 }

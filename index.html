@@ -35,14 +35,15 @@
                 <div class="card">
                     <div class="item item-text-wrap">
                         {{filtered.length}} Results Showing
-                        <br>
                         <h1>Total Earnings: {{filtered | sumOfValue:'amount'}}Tk</h1>
+                        <h2 class="active">Paid amount::{{filtered | sumOfpaidValue:'amount'}}Tk</h2>
+                        <h2 class="inactive">Unpaid amount::{{filtered | sumOfunpaidValue:'amount'}}Tk</h2>
                     </div>
                 </div>
                 <div class="list">
                     <div class="item item-button-right custom-item" ng-repeat="duty in filtered = ( duties | filter:search)">
                         <div class="row">
-                            <div class="col-75">
+                            <div class="col-75" data-ng-click="show(duty.random)">
                                 <h2>{{duty.place | uppercase}}</h2>
                                 <h2>By:{{duty.provider | uppercase}}</h2>
                                 <h2>On:{{duty.date}}-{{duty.month}}-{{duty.year}}</h2>
@@ -50,7 +51,7 @@
                                 <h2 class="inactive" ng-show="!duty.paid">Unpaid</h2>
                             </div>
                             <div class="col">
-                                <a class="button button-icon button-danger icon ion-eye" data-ng-click="show(duty.random)"></a>
+                                <!-- <a class="button button-icon button-danger icon ion-eye" data-ng-click="show(duty.random)"></a> -->
                                 <a class="button button-icon button-danger icon ion-edit" data-ng-click="edit(duty.random)"></a>
                                 <a class="button button-icon button-danger icon ion-trash-a" data-ng-click="delete(duty.random)"></a>
                             </div>
@@ -58,6 +59,9 @@
                     </div>
                 </div>
             </ion-content>
+            <div class="bar bar-footer bar-calm">
+                <div class="title">Powered By Naieem Mahmud Supto</div>
+            </div>
         </ion-side-menu-content>
         <ion-side-menu side="left">
             <ion-header-bar class="bar-calm center">
@@ -115,12 +119,10 @@
                     <option value="2019">2019</option>
                     <option value="2020">2020</option>
                 </select>
+                <br>
             </ion-content>
         </ion-side-menu>
     </ion-side-menus>
-    <div class="bar bar-footer bar-calm">
-        <div class="title">Powered By Naieem Mahmud Supto</div>
-    </div>
     <script id="add.html" type="text/ng-template">
         <ion-modal-view>
             <ion-header-bar class="bar bar-header bar-calm">
@@ -219,7 +221,7 @@
                         <h2>Amount:{{entry.amount}}</h2>
                     </div>
                     <div class="item item-divider">
-                        <h2>Payment Status:<span ng-show="entry.paid">Paid</span><span ng-show="!entry.paid">UnPaid</span></h2>
+                        <h2>Payment Status:<span ng-show="entry.paid" class="status-active">Paid</span><span ng-show="!entry.paid" class="status-inactive">UnPaid</span></h2>
                     </div>
                 </div>
             </ion-content>

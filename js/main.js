@@ -14,7 +14,7 @@ month[11] = "December";
 
 angular.module('ionicApp', ['ionic', 'ngCordova', 'ion-datetime-picker','ion-floating-menu'])
 
-.run(function($ionicPlatform, $ionicPopup, $rootScope) {
+.run(function($ionicPlatform, $ionicPopup) {
     $ionicPlatform.ready(function() {
         if (window.cordova && window.cordova.plugins.Keyboard) {
             cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
@@ -29,6 +29,8 @@ angular.module('ionicApp', ['ionic', 'ngCordova', 'ion-datetime-picker','ion-flo
     $ionicPlatform.registerBackButtonAction(function(event) {
         event.preventDefault();
         event.stopPropagation();
+        $scope.duty = [];
+        $scope.edit_data = [];
         $ionicPopup.show({
             title: 'Exit Scheduler?',
             template: 'Are you sure you want to exit Scheduler?',
