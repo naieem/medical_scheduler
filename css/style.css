@@ -77,3 +77,23 @@ select {
 #floating-menu.active ion-floating-item >li {
     background-color: #11c1f3 !important;
 }
+.item h2.active{
+    background: green;
+    padding: 10px;
+    text-align: center;
+    color: #fff !important;
+    border-radius: 10px;
+    border: none;
+    margin-top: 10px;
+    text-transform: uppercase;
+}
+.item h2.inactive{
+    background: red;
+    padding: 10px;
+    text-align: center;
+    color: #fff !important;
+    border-radius: 10px;
+    border: none;
+    margin-top: 10px;
+    text-transform: uppercase;
+}

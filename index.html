@@ -26,7 +26,12 @@
         </div>
         <div class="card">
             <div class="item item-text-wrap">
-            <h1>Search By::</h1>
+                <h1>Search By::</h1>
+                <select data-ng-model="search.paid">
+                    <option value="">Status</option>
+                    <option value="true">Paid</option>
+                    <option value="false">Unpaid</option>
+                </select>
                 <select data-ng-model="search.date">
                     <option value="">Date</option>
                     <option value="1">1</option>
@@ -72,7 +77,8 @@
                     <option value="2019">2019</option>
                     <option value="2020">2020</option>
                 </select>
-                <br><br> {{filtered.length}} Results Showing
+                <br>
+                <br> {{filtered.length}} Results Showing
                 <br>
                 <h1>Total Earnings: {{filtered | sumOfValue:'amount'}}Tk</h1>
             </div>
@@ -83,7 +89,9 @@
                     <div class="col-75">
                         <h2>{{duty.place | uppercase}}</h2>
                         <h2>By:{{duty.provider | uppercase}}</h2>
-                        <h2>On:{{duty.date}}-{{duty.month}}-{{duty.year}}</h2>
+                        <h2>On:{{duty.date}}-{{duty.month}}-{{duty.year}}</h2> Paid Status:
+                        <h2 class="active" ng-show="duty.paid">paid</h2>
+                        <h2 class="inactive" ng-show="!duty.paid">Unpaid</h2>
                     </div>
                     <div class="col">
                         <a class="button button-icon button-danger icon ion-eye" data-ng-click="show(duty.random)"></a>
@@ -109,6 +117,7 @@
                         <input type="text" class="" placeholder="Place" data-ng-model="duty.place">
                     </label>
                     <label class="item item-input item-stacked-label">
+                        Date:
                         <input type="date" class="" placeholder="Date" data-ng-model="duty.dte">
                     </label>
                     <label class="item item-input item-stacked-label">
@@ -123,6 +132,9 @@
                     </label>
                     <label class="item item-input item-stacked-label">
                         <input type="text" class="" placeholder="Provider" data-ng-model="duty.provider">
+                    </label>
+                    <label class="item item-input item-stacked-label">
+                        <ion-checkbox ng-model="duty.paid">Check if amount is paid</ion-checkbox>
                     </label>
                     <label class="item item-input item-stacked-label">
                         <input type="number" class="" placeholder="Amount" data-ng-model="duty.amount">
@@ -144,6 +156,7 @@
                         <input type="text" class="" placeholder="Place" data-ng-model="edit_data.place">
                     </label>
                     <label class="item item-input item-stacked-label">
+                        Date:
                         <input type="date" class="" placeholder="Date" data-ng-model="edit_data.dte" value="edit_data.dte">
                     </label>
                     <label class="item item-input item-stacked-label">
@@ -158,6 +171,9 @@
                     </label>
                     <label class="item item-input item-stacked-label">
                         <input type="text" class="" placeholder="Provider" data-ng-model="edit_data.provider">
+                    </label>
+                    <label class="item item-input item-stacked-label">
+                        <ion-checkbox ng-model="edit_data.paid">Check if amount is paid</ion-checkbox>
                     </label>
                     <label class="item item-input item-stacked-label">
                         <input type="number" class="" placeholder="Amount" data-ng-model="edit_data.amount">

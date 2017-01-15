@@ -58,17 +58,18 @@ angular.module('ionicApp').controller('AppCtrl', function($rootScope, $scope, $i
     $scope.add_entry = function(event) {
             event.preventDefault();
             if ($scope.duty.place == undefined || $scope.duty.place == "" || $scope.duty.dte == undefined || $scope.duty.dte == "" || $scope.duty.amount == undefined || $scope.duty.amount == "" || $scope.duty.provider == undefined || $scope.duty.provider == "" || $scope.duty.schedule == undefined || $scope.duty.schedule == "") {
-                $cordovaToast.showShortBottom('Please Provide All Information To Add Schedule')
-                    .then(
-                        function(success) {},
-                        function(error) {
-                            alert(error);
-                        }
-                    );
+                // $cordovaToast.showShortBottom('Please Provide All Information To Add Schedule')
+                //     .then(
+                //         function(success) {},
+                //         function(error) {
+                //             alert(error);
+                //         }
+                //     );
             }
             else {
                 $scope.show_add_true = false;
                 var temp_date = new Date($scope.duty.dte);
+                var paid = $scope.duty.paid;
                 var mnth = month[temp_date.getMonth()];
                 var dt = temp_date.getDate();
                 var yr = temp_date.getFullYear();
@@ -84,30 +85,31 @@ angular.module('ionicApp').controller('AppCtrl', function($rootScope, $scope, $i
                     month: mnth,
                     date: dt,
                     year: yr,
-                    random: rnd
+                    random: rnd,
+                    paid:paid
                 }
                 console.log(data);
                 $scope.duties.push(data);
-                $cordovaLocalNotification.schedule({
-                    id: rnd,
-                    title: 'Duty Notification',
-                    text: 'You have a duty today in: ' + $scope.duty.place + ' Schedule: ' + $scope.duty.schedule,
-                    firstAt: $scope.duty.dte
-                }).then(function(result) {
-                    //alert(result);
-                });
+                // $cordovaLocalNotification.schedule({
+                //     id: rnd,
+                //     title: 'Duty Notification',
+                //     text: 'You have a duty today in: ' + $scope.duty.place + ' Schedule: ' + $scope.duty.schedule,
+                //     firstAt: $scope.duty.dte
+                // }).then(function(result) {
+                //     //alert(result);
+                // });
                 $scope.duty = [];
                 //$scope.dte = '';
                 localStorage.setItem("duties", angular.toJson($scope.duties));
                 var t = angular.fromJson(localStorage.getItem('duties'));
                 console.log(t);
-                $cordovaToast.showShortBottom('New Schedule Added')
-                    .then(
-                        function(success) {},
-                        function(error) {
-                            alert(error);
-                        }
-                    );
+                // $cordovaToast.showShortBottom('New Schedule Added')
+                //     .then(
+                //         function(success) {},
+                //         function(error) {
+                //             alert(error);
+                //         }
+                //     );
                 $scope.modal.hide();
             }
         }
@@ -155,13 +157,13 @@ angular.module('ionicApp').controller('AppCtrl', function($rootScope, $scope, $i
     $scope.edit_entry = function(index) {
         console.log($scope.duties[index]);
         if ($scope.edit_data.place == undefined || $scope.edit_data.place == "" || $scope.edit_data.dte == undefined || $scope.edit_data.dte == "" || $scope.edit_data.amount == undefined || $scope.edit_data.amount == "" || $scope.edit_data.provider == undefined || $scope.edit_data.provider == "" || $scope.edit_data.schedule == undefined || $scope.edit_data.schedule == "") {
-            $cordovaToast.showShortBottom('Please Provide All Information To Add Schedule')
-                .then(
-                    function(success) {},
-                    function(error) {
-                        alert(error);
-                    }
-                );
+            // $cordovaToast.showShortBottom('Please Provide All Information To Add Schedule')
+            //     .then(
+            //         function(success) {},
+            //         function(error) {
+            //             alert(error);
+            //         }
+            //     );
         } else {
         $scope.show_add_true = false;
         console.log($scope.edit_data);
@@ -177,26 +179,27 @@ angular.module('ionicApp').controller('AppCtrl', function($rootScope, $scope, $i
         $scope.duties[index].month = mnth;
         $scope.duties[index].date = dt;
         $scope.duties[index].year = yr;
+        $scope.duties[index].paid =$scope.edit_data.paid;
 
         localStorage.setItem("duties", angular.toJson($scope.duties));
-        $cordovaLocalNotification.schedule({
-            id: $scope.edit_data.random,
-            title: 'Duty Notification',
-            text: 'You have a duty today in: ' + $scope.edit_data.place + ' Schedule: ' + $scope.edit_data.schedule,
-            firstAt: $scope.edit_data.dte
-        }).then(function(result) {
-            //alert(result);
-        });
+        // $cordovaLocalNotification.schedule({
+        //     id: $scope.edit_data.random,
+        //     title: 'Duty Notification',
+        //     text: 'You have a duty today in: ' + $scope.edit_data.place + ' Schedule: ' + $scope.edit_data.schedule,
+        //     firstAt: $scope.edit_data.dte
+        // }).then(function(result) {
+        //     //alert(result);
+        // });
         $scope.edit_data = [];
         var t = angular.fromJson(localStorage.getItem('duties'));
         console.log(t);
-        $cordovaToast.showShortBottom('Schedule Edited')
-            .then(
-                function(success) {},
-                function(error) {
-                    alert(error);
-                }
-            );
+        // $cordovaToast.showShortBottom('Schedule Edited')
+        //     .then(
+        //         function(success) {},
+        //         function(error) {
+        //             alert(error);
+        //         }
+        //     );
         $scope.edit_modal.hide();
         }
     }
