@@ -56,10 +56,13 @@ a.button {
 
 select {
     padding: 10px 20px;
-    width: 98%;
+    width: 84%;
     border: none;
     border-radius: 10px;
-    margin-bottom: 20px;
+    /* margin-bottom: 0px; */
+    /* margin-top: 20px; */
+    margin: 20px auto;
+    display: block;
 }
 
 .popup-container .popup {
@@ -77,7 +80,8 @@ select {
 #floating-menu.active ion-floating-item >li {
     background-color: #11c1f3 !important;
 }
-.item h2.active{
+
+.item h2.active {
     background: green;
     padding: 10px;
     text-align: center;
@@ -87,7 +91,8 @@ select {
     margin-top: 10px;
     text-transform: uppercase;
 }
-.item h2.inactive{
+
+.item h2.inactive {
     background: red;
     padding: 10px;
     text-align: center;

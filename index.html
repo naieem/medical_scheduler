@@ -11,28 +11,67 @@
 </head>
 
 <body ng-controller="AppCtrl" data-ng-cloak>
-    <ion-header-bar align-title="center" class="bar-calm">
-        <h1 class="title">WelCome To Doctor Schedular</h1>
-    </ion-header-bar>
-    <ion-floating-menu>
-        <ion-floating-item icon="ion-clipboard" click="add_modal()" text="Add New Schedule"></ion-floating-item>
-        <!-- <ion-floating-item icon="ion-person" click="myEvent()" text="Tomorrow"></ion-floating-item> -->
-    </ion-floating-menu>
-    <ion-content>
-        <div class="bar bar-calm" style="position: static;">
-            <input type="text" placeholder="Search" data-ng-model='search.place'>
-            <!-- <button class="button button-icon ion-compose" ng-click="add_modal($event)">
-            </button> -->
-        </div>
-        <div class="card">
-            <div class="item item-text-wrap">
-                <h1>Search By::</h1>
-                <select data-ng-model="search.paid">
+    <ion-side-menus enable-menu-with-back-views="false">
+        <ion-side-menu-content>
+            <ion-nav-bar class="bar-calm">
+                <ion-nav-back-button>
+                </ion-nav-back-button>
+                <ion-nav-buttons side="left">
+                    <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
+                    </button>
+                </ion-nav-buttons>
+            </ion-nav-bar>
+            <ion-header-bar align-title="center" class="bar-calm">
+                <h1 class="title">WelCome To Doctor Schedular</h1>
+            </ion-header-bar>
+            <ion-floating-menu>
+                <ion-floating-item icon="ion-clipboard" click="add_modal()" text="Add New Schedule"></ion-floating-item>
+                <!-- <ion-floating-item icon="ion-person" click="myEvent()" text="Tomorrow"></ion-floating-item> -->
+            </ion-floating-menu>
+            <ion-content>
+                <div class="bar bar-calm" style="position: static;">
+                    <input type="text" placeholder="Search" data-ng-model='search'>
+                </div>
+                <div class="card">
+                    <div class="item item-text-wrap">
+                        <br>
+                        <br> {{filtered.length}} Results Showing
+                        <br>
+                        <h1>Total Earnings: {{filtered | sumOfValue:'amount'}}Tk</h1>
+                    </div>
+                </div>
+                <div class="list">
+                    <div class="item item-button-right custom-item" ng-repeat="duty in filtered = ( duties | filter:search)">
+                        <div class="row">
+                            <div class="col-75">
+                                <h2>{{duty.place | uppercase}}</h2>
+                                <h2>By:{{duty.provider | uppercase}}</h2>
+                                <h2>On:{{duty.date}}-{{duty.month}}-{{duty.year}}</h2>
+                                <h2 class="active" ng-show="duty.paid">paid</h2>
+                                <h2 class="inactive" ng-show="!duty.paid">Unpaid</h2>
+                            </div>
+                            <div class="col">
+                                <a class="button button-icon button-danger icon ion-eye" data-ng-click="show(duty.random)"></a>
+                                <a class="button button-icon button-danger icon ion-edit" data-ng-click="edit(duty.random)"></a>
+                                <a class="button button-icon button-danger icon ion-trash-a" data-ng-click="delete(duty.random)"></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ion-content>
+        </ion-side-menu-content>
+        <ion-side-menu side="left">
+            <ion-header-bar class="bar-calm center">
+                <h1 class="title">Find Your Duties</h1>
+            </ion-header-bar>
+            <ion-content>
+                <!-- <span>Search By::</span> -->
+                <select data-ng-model="search.paid" ng-change="update_paid(search.paid)">
                     <option value="">Status</option>
                     <option value="true">Paid</option>
                     <option value="false">Unpaid</option>
                 </select>
-                <select data-ng-model="search.date">
+                <select ng-model="search.date" ng-change="update_date(search.date)">
                     <option value="">Date</option>
                     <option value="1">1</option>
                     <option value="2">2</option>
@@ -66,42 +105,20 @@
                     <option value="30">30</option>
                     <option value="31">31
                 </select>
-                <select data-ng-model="search.month">
+                <select data-ng-model="search.month" ng-change="update_month(search.month)">
                     <option value="">Month</option>
                     <option ng-repeat="mn in mnth" value="{{mn}}">{{mn}}</option>
                 </select>
-                <select data-ng-model="search.year">
+                <select data-ng-model="search.year" ng-change="update_year(search.year)">
                     <option value="">Year</option>
                     <option value="2017">2017</option>
                     <option value="2018">2018</option>
                     <option value="2019">2019</option>
                     <option value="2020">2020</option>
                 </select>
-                <br>
-                <br> {{filtered.length}} Results Showing
-                <br>
-                <h1>Total Earnings: {{filtered | sumOfValue:'amount'}}Tk</h1>
-            </div>
-        </div>
-        <div class="list">
-            <div class="item item-button-right custom-item" ng-repeat="duty in filtered = ( duties | filter:search)">
-                <div class="row">
-                    <div class="col-75">
-                        <h2>{{duty.place | uppercase}}</h2>
-                        <h2>By:{{duty.provider | uppercase}}</h2>
-                        <h2>On:{{duty.date}}-{{duty.month}}-{{duty.year}}</h2> Paid Status:
-                        <h2 class="active" ng-show="duty.paid">paid</h2>
-                        <h2 class="inactive" ng-show="!duty.paid">Unpaid</h2>
-                    </div>
-                    <div class="col">
-                        <a class="button button-icon button-danger icon ion-eye" data-ng-click="show(duty.random)"></a>
-                        <a class="button button-icon button-danger icon ion-edit" data-ng-click="edit(duty.random)"></a>
-                        <a class="button button-icon button-danger icon ion-trash-a" data-ng-click="delete(duty.random)"></a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </ion-content>
+            </ion-content>
+        </ion-side-menu>
+    </ion-side-menus>
     <div class="bar bar-footer bar-calm">
         <div class="title">Powered By Naieem Mahmud Supto</div>
     </div>
@@ -201,6 +218,9 @@
                     </div>
                     <div class="item item-divider">
                         <h2>Amount:{{entry.amount}}</h2>
+                    </div>
+                    <div class="item item-divider">
+                        <h2>Payment Status:<span ng-show="entry.paid">Paid</span><span ng-show="!entry.paid">UnPaid</span></h2>
                     </div>
                 </div>
             </ion-content>

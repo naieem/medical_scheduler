@@ -7,6 +7,7 @@
 angular.module('ionicApp').controller('AppCtrl', function($rootScope, $scope, $ionicModal, $ionicPopup, $cordovaToast, $cordovaLocalNotification, $ionicSideMenuDelegate) {
     $scope.duty = [];
     $scope.mnth = [];
+    $scope.search=[];
     for (var i = 0; i < month.length; i++) {
         $scope.mnth[i] = month[i];
     }
@@ -44,6 +45,19 @@ angular.module('ionicApp').controller('AppCtrl', function($rootScope, $scope, $i
     }).then(function(modal) {
         $scope.show_modal = modal;
     });
+
+    $scope.update_paid = function(dt){
+        $scope.search.paid = dt;
+    }
+     $scope.update_date = function(dt){
+        $scope.search.date = dt;
+    }
+     $scope.update_month = function(dt){
+        $scope.search.month = dt;
+    }
+     $scope.update_year = function(dt){
+        $scope.search.year = dt;
+    }
 
     /**
      * [add_entry adding new duty list]
