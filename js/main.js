@@ -29,8 +29,6 @@ angular.module('ionicApp', ['ionic', 'ngCordova', 'ion-datetime-picker','ion-flo
     $ionicPlatform.registerBackButtonAction(function(event) {
         event.preventDefault();
         event.stopPropagation();
-        $scope.duty = [];
-        $scope.edit_data = [];
         $ionicPopup.show({
             title: 'Exit Scheduler?',
             template: 'Are you sure you want to exit Scheduler?',
