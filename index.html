@@ -2,7 +2,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width, height=device-height">
     <title>Ionic Modal</title>
     <link rel="stylesheet" href="css/ionic.min.css" />
     <link rel="stylesheet" href="css/style.css" />
@@ -30,7 +30,7 @@
             </ion-floating-menu>
             <ion-content>
                 <div class="bar bar-calm" style="position: static;">
-                    <input type="text" placeholder="Search" data-ng-model='search.place'>
+                    <input type="text" placeholder="Search" data-ng-model='search.provider'>
                 </div>
                 <div class="card">
                     <div class="item item-text-wrap">
@@ -43,7 +43,7 @@
                 <div class="list">
                     <div class="item item-button-right custom-item" ng-repeat="duty in filtered = ( duties | filter:search)">
                         <div class="row">
-                            <div class="col-75" data-ng-click="show(duty.random)">
+                            <div class="col-75" data-ng-click="show(duty.random)" style="margin-right: 40px;">
                                 <h2>{{duty.place | uppercase}}</h2>
                                 <h2>By:{{duty.provider | uppercase}}</h2>
                                 <h2>On:{{duty.date}}-{{duty.month}}-{{duty.year}}</h2>
@@ -129,7 +129,7 @@
                 <h1 class="title">New Schedule</h1>
                 <button class="button button-clear button-primary" ng-click="add_modal_hide()">Cancel</button>
             </ion-header-bar>
-            <ion-content class="padding">
+            <ion-content class="padding" scroll="true">
                 <div class="list">
                     <label class="item item-input item-stacked-label">
                         <input type="text" class="" placeholder="Place" data-ng-model="duty.place">
@@ -168,7 +168,7 @@
                 <h1 class="title">Edit Schedule</h1>
                 <button class="button button-clear button-primary" ng-click="edit_modal_hide();">Cancel</button>
             </ion-header-bar>
-            <ion-content class="padding">
+            <ion-content class="padding" scroll="true">
                 <div class="list">
                     <label class="item item-input item-stacked-label">
                         <input type="text" class="" placeholder="Place" data-ng-model="edit_data.place">
@@ -207,7 +207,7 @@
                 <h1 class="title">Show Details</h1>
                 <button class="button button-clear button-primary" ng-click="show_modal_hide()">Back</button>
             </ion-header-bar>
-            <ion-content class="padding">
+            <ion-content class="padding" scroll="true">
                 <div class="card">
                     <div class="item item-divider">
                         <h2>Place:{{entry.place | uppercase}}</h2>
