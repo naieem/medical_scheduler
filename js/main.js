@@ -21,7 +21,8 @@ angular.module('ionicApp', ['ionic', 'ngCordova', 'ion-datetime-picker','ion-flo
             cordova.plugins.Keyboard.disableScroll(true);
         }
         if (window.StatusBar) {
-            StatusBar.hide();
+            //StatusBar.hide();
+            StatusBar.styleDefault();
         }
 
     });
