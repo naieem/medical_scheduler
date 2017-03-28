@@ -56,8 +56,18 @@ angular.module('ionicApp').controller('AppCtrl', function($rootScope, $scope, $i
         $scope.search.month = dt;
     }
     $scope.update_year = function(dt) {
-        $scope.search.year = dt;
-    }
+            $scope.search.year = dt;
+        }
+        /*
+         * Order by date 
+         */
+    $scope.orderByDate = function(item) {
+        console.log(item.fulldate);
+        // var parts = item.fulldate.split('-');
+        // var date = new Date(parseInt(parts[2], parseInt(parts[1]), parseInt(parts[0])));
+        var date = new Date(item.fulldate);
+        return date;
+    };
 
     /**
      * [add_entry adding new duty list]
