@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<widget xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0" id="com.techynaf.medicalscheduler" version="1.0.0">
+<widget xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0" id="com.naieem.medicalscheduler" version="1.0.0">
     <name>Medical Scheduler</name>
     <description>
         This application will help doctors to keep their duty records and also calculate their earnings through duty. A dynamic search and calculate feature is added with this application. Doctors can search their duty schedule by month, year and also by the place or their duty. It will automatically calculate the earnings according to the search criteria and will show the exact result as expected. Another huge advantage of the application is doctors duty entry will automatically be scheduled. So doctors will get a notification of their duty with details in their notification bar at 12AM of the exact day of duty. It is very lightweight and easy to use. Interface is very simple but attractive. Hope doctors will get this app very much friendly to use.
     </description>
-    <author href="http://=naieem.me" email="naieem.com">
+    <author href="http://naieem.me" email="naieem.com">
         Naieem
     </author>
     <!--
