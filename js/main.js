@@ -14,6 +14,17 @@ month[11] = "December";
 
 angular.module('ionicApp', ['ionic', 'ngCordova', 'ion-datetime-picker','ion-floating-menu'])
 
+.config(function() {
+    var config = {
+        apiKey: "AIzaSyDictE2wD4RIQtuaPURvO1gcvzQqLC-Sok",
+        authDomain: "medical-login.firebaseapp.com",
+        databaseURL: "https://medical-login.firebaseio.com",
+        projectId: "medical-login",
+        storageBucket: "medical-login.appspot.com",
+        messagingSenderId: "854763670874"
+    };
+    firebase.initializeApp(config);
+}
 .run(function($ionicPlatform, $ionicPopup) {
     $ionicPlatform.ready(function() {
         if (window.cordova && window.cordova.plugins.Keyboard) {
