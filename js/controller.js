@@ -16,12 +16,19 @@ angular.module('ionicApp').controller('AppCtrl', function($cordovaNetwork, $fire
 
     document.addEventListener("deviceready", function() {
 
-        var type = $cordovaNetwork.getNetwork()
+        var type = $cordovaNetwork.getNetwork();
 
-        var isOnline = $cordovaNetwork.isOnline()
+        var isOnline = $cordovaNetwork.isOnline();
 
-        var isOffline = $cordovaNetwork.isOffline()
-
+        var isOffline = $cordovaNetwork.isOffline();
+        alert(isOnline);
+        alert(isOffline);
+        if(isOnline){
+          $scope.duties = angular.fromJson(localStorage.getItem("duties"));
+          for (var i = 0; i < $scope.duties.length; i++) {
+            lists.$add($scope.duties[i]);
+          }
+        }
         // listen for Online event
         $rootScope.$on('$cordovaNetwork:online', function(event, networkState) {
             var onlineState = networkState;
