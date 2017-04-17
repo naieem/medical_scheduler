@@ -13,6 +13,28 @@ angular.module('ionicApp').controller('AppCtrl', function($cordovaNetwork, $fire
     for (var i = 0; i < month.length; i++) {
         $scope.mnth[i] = month[i];
     }
+
+    document.addEventListener("deviceready", function() {
+
+        var type = $cordovaNetwork.getNetwork()
+
+        var isOnline = $cordovaNetwork.isOnline()
+
+        var isOffline = $cordovaNetwork.isOffline()
+
+        // listen for Online event
+        $rootScope.$on('$cordovaNetwork:online', function(event, networkState) {
+            var onlineState = networkState;
+            alert("online");
+        })
+
+        // listen for Offline event
+        $rootScope.$on('$cordovaNetwork:offline', function(event, networkState) {
+            var offlineState = networkState;
+            alert("offline");
+        })
+
+    }, false);
     /**
      * [Storing data to variable for use at first initialization]
      * @param  {[type]} localStorage.getItem("duties") [description]
@@ -28,28 +50,6 @@ angular.module('ionicApp').controller('AppCtrl', function($cordovaNetwork, $fire
         // }).then(function(){
         //   console.log("The loading indicator is now displayed");
         // });
-        document.addEventListener("deviceready", function() {
-
-            var type = $cordovaNetwork.getNetwork()
-
-            var isOnline = $cordovaNetwork.isOnline()
-
-            var isOffline = $cordovaNetwork.isOffline()
-
-            // listen for Online event
-            $rootScope.$on('$cordovaNetwork:online', function(event, networkState) {
-                var onlineState = networkState;
-                alert("online");
-            })
-
-            // listen for Offline event
-            $rootScope.$on('$cordovaNetwork:offline', function(event, networkState) {
-                var offlineState = networkState;
-                alert("offline");
-            })
-
-        }, false);
-
         $scope.duties = angular.fromJson(localStorage.getItem("duties"));
         // for (var i = 0; i < $scope.duties.length; i++) {
         //   lists.$add($scope.duties[i]);
