@@ -12,7 +12,7 @@ month[9] = "October";
 month[10] = "November";
 month[11] = "December";
 
-angular.module('ionicApp', ['ionic', 'ngCordova', 'ion-datetime-picker','ion-floating-menu'])
+angular.module('ionicApp', ['ionic', 'ngCordova', 'ion-datetime-picker','ion-floating-menu','firebase'])
 
 .config(function() {
     var config = {
@@ -24,7 +24,7 @@ angular.module('ionicApp', ['ionic', 'ngCordova', 'ion-datetime-picker','ion-flo
         messagingSenderId: "854763670874"
     };
     firebase.initializeApp(config);
-}
+})
 .run(function($ionicPlatform, $ionicPopup) {
     $ionicPlatform.ready(function() {
         if (window.cordova && window.cordova.plugins.Keyboard) {
