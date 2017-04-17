@@ -45,9 +45,8 @@ angular.module('ionicApp').controller('AppCtrl', function($cordovaNetwork, $fire
     $ionicLoading.show({
         template: 'Loading...',
         duration: 3000
-    }).then(function() {
-        $scope.duties=lists;
     });
+    $scope.duties=lists;
     /**
      * [Storing data to variable for use at first initialization]
      * @param  {[type]} localStorage.getItem("duties") [description]
