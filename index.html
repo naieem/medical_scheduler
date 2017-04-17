@@ -41,7 +41,7 @@
                     </div>
                 </div>
                 <div class="list">
-                    <div class="item item-button-right custom-item" ng-repeat="duty in filtered = ( duties | filter:search | orderBy:orderByDate)">
+                    <div class="item item-button-right custom-item" ng-repeat="duty in filtered = ( duties | filter:search | orderBy:orderByDate) track by $index">
                         <div class="row">
                             <div class="col-75" data-ng-click="show(duty.random)" style="margin-right: 40px;">
                                 <h2>{{duty.place | uppercase}}</h2>

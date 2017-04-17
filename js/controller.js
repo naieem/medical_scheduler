@@ -9,7 +9,10 @@ angular.module('ionicApp').controller('AppCtrl', function($cordovaNetwork, $fire
     $scope.mnth = [];
     $scope.search = [];
     var ref = firebase.database().ref();
+    var backup = firebase.database().ref().child("backup");
+    var backuparray = $firebaseArray(backup);
     var lists = $firebaseArray(ref);
+
     for (var i = 0; i < month.length; i++) {
         $scope.mnth[i] = month[i];
     }
@@ -46,28 +49,51 @@ angular.module('ionicApp').controller('AppCtrl', function($cordovaNetwork, $fire
         template: 'Loading...',
         duration: 3000
     });
-    $scope.duties=lists;
+    // console.log('local',localStorage.getItem("duties"));
     /**
      * [Storing data to variable for use at first initialization]
      * @param  {[type]} localStorage.getItem("duties") [description]
      * @return {[type]}                                [description]
      */
-    // if (localStorage.getItem("duties") == null) {
-    //     $scope.duties = [];
-    //     localStorage.setItem("duties", angular.toJson($scope.duties));
-    // } else {
-    //     // $ionicLoading.show({
-    //     //   template: 'Loading...',
-    //     //   duration: 3000
-    //     // }).then(function(){
-    //     //   console.log("The loading indicator is now displayed");
-    //     // });
-    //     $scope.duties = angular.fromJson(localStorage.getItem("duties"));
-    //     // for (var i = 0; i < $scope.duties.length; i++) {
-    //     //   lists.$add($scope.duties[i]);
-    //     // }
-    //     console.log($scope.duties);
-    // }
+    if (localStorage.getItem("duties") == null || localStorage.getItem("duties") == '') {
+        $scope.duties = [];
+        lists.$loaded().then(function(arr) {
+            // console.log('from loop in loaded', arr);
+            for (var i = 0; i < arr.length; i++) {
+                if (arr[i].$id != "backup") {
+                    $scope.duties.push(arr[i]);
+                }
+            }
+            localStorage.setItem("duties", angular.toJson($scope.duties));
+            // localStorage.setItem("duties", $scope.duties);
+            console.log('localstore', angular.fromJson(localStorage.getItem("duties")));
+        }).catch(function(error) {
+            console.log("Error:", error);
+        });
+        setTimeout(function() {
+            backuparray.$add($scope.duties);
+        }, 3000);
+        // $scope.duties = [];
+
+    } else {
+        // $ionicLoading.show({
+        //   template: 'Loading...',
+        //   duration: 3000
+        // }).then(function(){
+        //   console.log("The loading indicator is now displayed");
+        // });
+        $scope.duties = [];
+        // $scope.duties = angular.fromJson(localStorage.getItem("duties"));
+        // $scope.duties = localStorage.getItem("duties");
+        // localStorage.setItem("duties", $scope.duties);
+        localStorage.setItem("duties", $scope.duties);
+
+        // for (var i = 0; i < $scope.duties.length; i++) {
+        //   lists.$add($scope.duties[i]);
+        // }
+        console.log('bair', $scope.duties);
+    }
+
     /**
      * [Modal for add,show and edit records]
      * @param  {[type]} modal) {                       $scope.modal [description]
