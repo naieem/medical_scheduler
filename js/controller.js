@@ -13,13 +13,10 @@ angular.module('ionicApp').controller('AppCtrl', function($firebaseAuth, $cordov
     var backuparray = $firebaseArray(backup);
     var lists = $firebaseArray(ref);
     var auth = $firebaseAuth();
-    var checklogin = auth.$getAuth();
-    console.log(checklogin);
-    if (checklogin) {
-        $scope.loggedIn = true;
-    } else {
+    // var checklogin = auth.$getAuth();
+    // console.log(checklogin);
+    // if (checklogin) {
         $scope.loggedIn = false;
-    }
 
     for (var i = 0; i < month.length; i++) {
         $scope.mnth[i] = month[i];
@@ -38,10 +35,10 @@ angular.module('ionicApp').controller('AppCtrl', function($firebaseAuth, $cordov
 
         var type = $cordovaNetwork.getNetwork();
 
-        var isOnline = $cordovaNetwork.isOnline();
+        $scope.isOnline = $cordovaNetwork.isOnline();
 
-        var isOffline = $cordovaNetwork.isOffline();
-        // if(isOnline){
+        $scope.isOffline = $cordovaNetwork.isOffline();
+        // if($scope.isOnline){
         //   $scope.duties = angular.fromJson(localStorage.getItem("duties"));
         //   for (var i = 0; i < $scope.duties.length; i++) {
         //     lists.$add($scope.duties[i]);
@@ -50,23 +47,25 @@ angular.module('ionicApp').controller('AppCtrl', function($firebaseAuth, $cordov
         // listen for Online event
         $rootScope.$on('$cordovaNetwork:online', function(event, networkState) {
             var onlineState = networkState;
-            isOnline = true;
-            isOffline = false;
+            $scope.isOnline = true;
+            $scope.isOffline = false;
             alert("online");
         });
 
         // listen for Offline event
         $rootScope.$on('$cordovaNetwork:offline', function(event, networkState) {
             var offlineState = networkState;
-            isOffline = true;
-            isOnline = false;
+            $scope.isOffline = true;
+            $scope.isOnline = false;
             alert("offline");
             auth.$signOut();
             $scope.loggedIn = false;
             $scope.uid = "";
         });
 
-        $scope.duties = [];
+    }, false);
+
+    $scope.duties = [];
         $scope.duties = angular.fromJson(localStorage.getItem("duties"));
         /**
          * [Modal for add,show and edit records]
@@ -89,80 +88,82 @@ angular.module('ionicApp').controller('AppCtrl', function($firebaseAuth, $cordov
         });
 
         $scope.syncWithFirebase = function() {
-                if (!isOnline) {
-                    alert("Your are not online.");
-                    auth.$signOut();
-                    $scope.loggedIn = false;
-                    $scope.uid = "";
-                } else if (!$scope.loggedIn) {
-                    alert("You are not loggedIn");
-                } else {
-                    var child = ref.child($scope.uid);
-                    child.$loaded().then(function(arr) {
-                        if ($scope.duties.length > arr.length) {
-                            for (var i = arr.length; i < $scope.duties.length; i++) {
-                                child.$add($scope.duties[i]);
-                            }
-                        } else if ($scope.duties == null || $scope.duties == undefined || $scope.duties == '') {
-                            for (var i = 0; i < arr.length; i++) {
-                                // if (arr[i].$id != "backup") {
-                                $scope.duties.push(arr[i]);
-                                // }
-                            }
-                        }
-                        $scope.hideloader();
+            console.log('test');
+                // if (!$scope.isOnline) {
+                //     alert("Your are not online.");
+                //     auth.$signOut();
+                //     $scope.loggedIn = false;
+                //     $scope.uid = "";
+                // } else if (!$scope.loggedIn) {
+                //     alert("You are not loggedIn");
+                // } else {
+                //     var child = ref.child($scope.uid);
+                //     console.log($scope.uid);
+                //     child.$loaded().then(function(arr) {
+                //         if ($scope.duties.length > arr.length) {
+                //             for (var i = arr.length; i < $scope.duties.length; i++) {
+                //                 child.$add($scope.duties[i]);
+                //             }
+                //         } else if ($scope.duties == null || $scope.duties == undefined || $scope.duties == '') {
+                //             for (var i = 0; i < arr.length; i++) {
+                //                 // if (arr[i].$id != "backup") {
+                //                 $scope.duties.push(arr[i]);
+                //                 // }
+                //             }
+                //         }
+                //         $scope.hideloader();
 
-                        // console.log('from loop in loaded', arr);
-                        // console.log($scope.duties);
-                        // for (var i = 0; i < $scope.duties.length; i++) {
-                        // if (arr[i].$id != "backup") {
-                        //     // $scope.duties.push(arr[i]);
-                        //     // console.log("firebase arry",typeof(arr[i]));
-                        //     // console.log("scope arry",typeof($scope.duties[i]));
-                        //     var t=0;
-                        //     if($scope.duties[i].amount === arr[i].amount){
-                        //         t++;
-                        //     }
-                        //     if($scope.duties[i].date === arr[i].date){
-                        //         t++;
-                        //     }
-                        //     if($scope.duties[i].fulldate === arr[i].fulldate){
-                        //         t++;
-                        //     }
-                        //     if($scope.duties[i].month === arr[i].month){
-                        //         t++;
-                        //     }
-                        //     if($scope.duties[i].place === arr[i].place){
-                        //         t++;
-                        //     }
-                        //     if($scope.duties[i].provider === arr[i].provider){
-                        //         t++;
-                        //     }
-                        //     if($scope.duties[i].random === arr[i].random){
-                        //         t++;
-                        //     }
-                        //     if($scope.duties[i].schedule === arr[i].schedule){
-                        //         t++;
-                        //     }
-                        //     if($scope.duties[i].year === arr[i].year){
-                        //         t++;
-                        //     }
-                        //     console.log(t);
-                        //     if(t==9){
-                        //         console.log('milche');
-                        //     }
-                        //     else{
-                        //         console.log('na milenai');
-                        //     }
-                        // }
-                        // }
-                        // localStorage.setItem("duties", angular.toJson($scope.duties));
-                        // localStorage.setItem("duties", $scope.duties);
-                        // console.log('localstore', angular.fromJson(localStorage.getItem("duties")));
-                    }).catch(function(error) {
-                        console.log("Error:", error);
-                    });
-                }
+                //         // console.log('from loop in loaded', arr);
+                //         // console.log($scope.duties);
+                //         // for (var i = 0; i < $scope.duties.length; i++) {
+                //         // if (arr[i].$id != "backup") {
+                //         //     // $scope.duties.push(arr[i]);
+                //         //     // console.log("firebase arry",typeof(arr[i]));
+                //         //     // console.log("scope arry",typeof($scope.duties[i]));
+                //         //     var t=0;
+                //         //     if($scope.duties[i].amount === arr[i].amount){
+                //         //         t++;
+                //         //     }
+                //         //     if($scope.duties[i].date === arr[i].date){
+                //         //         t++;
+                //         //     }
+                //         //     if($scope.duties[i].fulldate === arr[i].fulldate){
+                //         //         t++;
+                //         //     }
+                //         //     if($scope.duties[i].month === arr[i].month){
+                //         //         t++;
+                //         //     }
+                //         //     if($scope.duties[i].place === arr[i].place){
+                //         //         t++;
+                //         //     }
+                //         //     if($scope.duties[i].provider === arr[i].provider){
+                //         //         t++;
+                //         //     }
+                //         //     if($scope.duties[i].random === arr[i].random){
+                //         //         t++;
+                //         //     }
+                //         //     if($scope.duties[i].schedule === arr[i].schedule){
+                //         //         t++;
+                //         //     }
+                //         //     if($scope.duties[i].year === arr[i].year){
+                //         //         t++;
+                //         //     }
+                //         //     console.log(t);
+                //         //     if(t==9){
+                //         //         console.log('milche');
+                //         //     }
+                //         //     else{
+                //         //         console.log('na milenai');
+                //         //     }
+                //         // }
+                //         // }
+                //         // localStorage.setItem("duties", angular.toJson($scope.duties));
+                //         // localStorage.setItem("duties", $scope.duties);
+                //         // console.log('localstore', angular.fromJson(localStorage.getItem("duties")));
+                //     }).catch(function(error) {
+                //         console.log("Error:", error);
+                //     });
+                // }
 
             }
             /*
@@ -230,9 +231,9 @@ angular.module('ionicApp').controller('AppCtrl', function($firebaseAuth, $cordov
         $scope.show_login_modal_log = function() {
             //event.preventDefault();
             //$scope.dte = '';
-            alert(isOnline);
-            alert(isOffline);
-            if (isOffline) {
+            alert($scope.isOnline);
+            alert($scope.isOffline);
+            if ($scope.isOffline) {
                 alert("You are offline");
             } else {
                 $scope.show_login_modal.show();
@@ -429,8 +430,6 @@ angular.module('ionicApp').controller('AppCtrl', function($firebaseAuth, $cordov
             // });
             $scope.show(notification.id);
         });
-
-    }, false);
     // $ionicLoading.show({
     //     template: 'Loading...',
     //     duration: 3000
