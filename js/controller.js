@@ -41,8 +41,8 @@ angular.module('ionicApp').controller('AppCtrl', function($firebaseAuth, $cordov
         var isOnline = $cordovaNetwork.isOnline();
 
         var isOffline = $cordovaNetwork.isOffline();
-        // alert(isOnline);
-        // alert(isOffline);
+        alert(isOnline);
+        alert(isOffline);
         // if(isOnline){
         //   $scope.duties = angular.fromJson(localStorage.getItem("duties"));
         //   for (var i = 0; i < $scope.duties.length; i++) {
@@ -166,7 +166,7 @@ angular.module('ionicApp').controller('AppCtrl', function($firebaseAuth, $cordov
                     } else if ($scope.duties == null || $scope.duties == undefined || $scope.duties == '') {
                         for (var i = 0; i < arr.length; i++) {
                             // if (arr[i].$id != "backup") {
-                                $scope.duties.push(arr[i]);
+                            $scope.duties.push(arr[i]);
                             // }
                         }
                     }
@@ -229,23 +229,21 @@ angular.module('ionicApp').controller('AppCtrl', function($firebaseAuth, $cordov
          * signin function for the auth user
          */
     $scope.signin = function(username, pass) {
-        if (isOffline) {
-            alert("You are offline");
-        } else {
-            $scope.showloader();
-            // console.log(username, pass);
-            auth.$signInWithEmailAndPassword(username, pass).then(function(firebaseUser) {
-                console.log("Signed in as:", firebaseUser);
-                $scope.useremail = firebaseUser.email;
-                $scope.uid = firebaseUser.uid;
-                $scope.loggedIn = true;
-                $scope.hideloader();
-                $scope.show_login_modal.hide();
-            }).catch(function(error) {
-                console.error("Authentication failed:", error);
-                $scope.hideloader();
-            });
-        }
+
+        $scope.showloader();
+        // console.log(username, pass);
+        auth.$signInWithEmailAndPassword(username, pass).then(function(firebaseUser) {
+            console.log("Signed in as:", firebaseUser);
+            $scope.useremail = firebaseUser.email;
+            $scope.uid = firebaseUser.uid;
+            $scope.loggedIn = true;
+            $scope.hideloader();
+            $scope.show_login_modal.hide();
+        }).catch(function(error) {
+            console.error("Authentication failed:", error);
+            $scope.hideloader();
+        });
+        // }
     }
 
     $scope.logout = function() {
@@ -292,7 +290,13 @@ angular.module('ionicApp').controller('AppCtrl', function($firebaseAuth, $cordov
     $scope.show_login_modal_log = function() {
         //event.preventDefault();
         //$scope.dte = '';
-        $scope.show_login_modal.show();
+        alert(isOnline);
+        alert(isOffline);
+        if (isOffline) {
+            alert("You are offline");
+        } else {
+            $scope.show_login_modal.show();
+        }
     }
     $scope.add_entry = function(event) {
             event.preventDefault();
