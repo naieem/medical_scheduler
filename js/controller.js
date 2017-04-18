@@ -88,82 +88,82 @@ angular.module('ionicApp').controller('AppCtrl', function($firebaseAuth, $cordov
         });
 
         $scope.syncWithFirebase = function() {
-            console.log('test');
-                // if (!$scope.isOnline) {
-                //     alert("Your are not online.");
-                //     auth.$signOut();
-                //     $scope.loggedIn = false;
-                //     $scope.uid = "";
-                // } else if (!$scope.loggedIn) {
-                //     alert("You are not loggedIn");
-                // } else {
-                //     var child = ref.child($scope.uid);
-                //     console.log($scope.uid);
-                //     child.$loaded().then(function(arr) {
-                //         if ($scope.duties.length > arr.length) {
-                //             for (var i = arr.length; i < $scope.duties.length; i++) {
-                //                 child.$add($scope.duties[i]);
-                //             }
-                //         } else if ($scope.duties == null || $scope.duties == undefined || $scope.duties == '') {
-                //             for (var i = 0; i < arr.length; i++) {
-                //                 // if (arr[i].$id != "backup") {
-                //                 $scope.duties.push(arr[i]);
-                //                 // }
-                //             }
-                //         }
-                //         $scope.hideloader();
+            // console.log('test');
+                if (!$scope.isOnline) {
+                    alert("Your are not online.");
+                    auth.$signOut();
+                    $scope.loggedIn = false;
+                    $scope.uid = "";
+                } else if (!$scope.loggedIn) {
+                    alert("You are not loggedIn");
+                } else {
+                    var child = ref.child($scope.uid);
+                    console.log($scope.uid);
+                    child.$loaded().then(function(arr) {
+                        if ($scope.duties.length > arr.length) {
+                            for (var i = arr.length; i < $scope.duties.length; i++) {
+                                child.$add($scope.duties[i]);
+                            }
+                        } else if ($scope.duties == null || $scope.duties == undefined || $scope.duties == '') {
+                            for (var i = 0; i < arr.length; i++) {
+                                // if (arr[i].$id != "backup") {
+                                $scope.duties.push(arr[i]);
+                                // }
+                            }
+                        }
+                        $scope.hideloader();
 
-                //         // console.log('from loop in loaded', arr);
-                //         // console.log($scope.duties);
-                //         // for (var i = 0; i < $scope.duties.length; i++) {
-                //         // if (arr[i].$id != "backup") {
-                //         //     // $scope.duties.push(arr[i]);
-                //         //     // console.log("firebase arry",typeof(arr[i]));
-                //         //     // console.log("scope arry",typeof($scope.duties[i]));
-                //         //     var t=0;
-                //         //     if($scope.duties[i].amount === arr[i].amount){
-                //         //         t++;
-                //         //     }
-                //         //     if($scope.duties[i].date === arr[i].date){
-                //         //         t++;
-                //         //     }
-                //         //     if($scope.duties[i].fulldate === arr[i].fulldate){
-                //         //         t++;
-                //         //     }
-                //         //     if($scope.duties[i].month === arr[i].month){
-                //         //         t++;
-                //         //     }
-                //         //     if($scope.duties[i].place === arr[i].place){
-                //         //         t++;
-                //         //     }
-                //         //     if($scope.duties[i].provider === arr[i].provider){
-                //         //         t++;
-                //         //     }
-                //         //     if($scope.duties[i].random === arr[i].random){
-                //         //         t++;
-                //         //     }
-                //         //     if($scope.duties[i].schedule === arr[i].schedule){
-                //         //         t++;
-                //         //     }
-                //         //     if($scope.duties[i].year === arr[i].year){
-                //         //         t++;
-                //         //     }
-                //         //     console.log(t);
-                //         //     if(t==9){
-                //         //         console.log('milche');
-                //         //     }
-                //         //     else{
-                //         //         console.log('na milenai');
-                //         //     }
-                //         // }
-                //         // }
-                //         // localStorage.setItem("duties", angular.toJson($scope.duties));
-                //         // localStorage.setItem("duties", $scope.duties);
-                //         // console.log('localstore', angular.fromJson(localStorage.getItem("duties")));
-                //     }).catch(function(error) {
-                //         console.log("Error:", error);
-                //     });
-                // }
+                        // console.log('from loop in loaded', arr);
+                        // console.log($scope.duties);
+                        // for (var i = 0; i < $scope.duties.length; i++) {
+                        // if (arr[i].$id != "backup") {
+                        //     // $scope.duties.push(arr[i]);
+                        //     // console.log("firebase arry",typeof(arr[i]));
+                        //     // console.log("scope arry",typeof($scope.duties[i]));
+                        //     var t=0;
+                        //     if($scope.duties[i].amount === arr[i].amount){
+                        //         t++;
+                        //     }
+                        //     if($scope.duties[i].date === arr[i].date){
+                        //         t++;
+                        //     }
+                        //     if($scope.duties[i].fulldate === arr[i].fulldate){
+                        //         t++;
+                        //     }
+                        //     if($scope.duties[i].month === arr[i].month){
+                        //         t++;
+                        //     }
+                        //     if($scope.duties[i].place === arr[i].place){
+                        //         t++;
+                        //     }
+                        //     if($scope.duties[i].provider === arr[i].provider){
+                        //         t++;
+                        //     }
+                        //     if($scope.duties[i].random === arr[i].random){
+                        //         t++;
+                        //     }
+                        //     if($scope.duties[i].schedule === arr[i].schedule){
+                        //         t++;
+                        //     }
+                        //     if($scope.duties[i].year === arr[i].year){
+                        //         t++;
+                        //     }
+                        //     console.log(t);
+                        //     if(t==9){
+                        //         console.log('milche');
+                        //     }
+                        //     else{
+                        //         console.log('na milenai');
+                        //     }
+                        // }
+                        // }
+                        // localStorage.setItem("duties", angular.toJson($scope.duties));
+                        // localStorage.setItem("duties", $scope.duties);
+                        // console.log('localstore', angular.fromJson(localStorage.getItem("duties")));
+                    }).catch(function(error) {
+                        alert("Error:", error);
+                    });
+                }
 
             }
             /*
