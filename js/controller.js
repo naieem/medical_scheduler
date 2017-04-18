@@ -180,7 +180,8 @@ angular.module('ionicApp').controller('AppCtrl', function($firebaseAuth, $cordov
             $scope.loggedIn = true;
             $scope.hideloader();
             $scope.show_login_modal.hide();
-            var childs = firebase.database().ref().child($scope.uid);
+            var child = firebase.database().ref().child($scope.uid);
+            var childs=$firebaseArray(child);
             // console.log(child);
             console.log($scope.uid);
             // lists.$loaded().then(function(arr) {
