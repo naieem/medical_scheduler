@@ -51,12 +51,14 @@ angular.module('ionicApp').controller('AppCtrl', function($firebaseAuth, $cordov
         $rootScope.$on('$cordovaNetwork:online', function(event, networkState) {
             var onlineState = networkState;
             isOnline = true;
+            alert("online");
         });
 
         // listen for Offline event
         $rootScope.$on('$cordovaNetwork:offline', function(event, networkState) {
             var offlineState = networkState;
             isOffline = true;
+            alert("offline");
         });
 
         $scope.duties = [];
