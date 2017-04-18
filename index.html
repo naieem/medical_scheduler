@@ -19,6 +19,7 @@
                 <ion-nav-buttons side="left">
                     <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
                     </button>
+                    <!-- <button class="button button-clear button-primary" ng-click="show_login_modal_log()">Login</button> -->
                 </ion-nav-buttons>
             </ion-nav-bar>
             <ion-header-bar align-title="center" class="bar-calm">
@@ -120,6 +121,21 @@
                     <option value="2020">2020</option>
                 </select>
                 <br>
+                <div class="card" ng-show="loggedIn">
+                    <div class="item item-text-wrap">
+                        SignedIn as <b>{{ useremail }}</b>
+                        <br> User id:{{uid}}
+                    </div>
+                </div>
+                <button ng-show="!loggedIn" class="button button-full button-positive" ng-click="show_login_modal_log()">
+                    Login
+                </button>
+                <button class="button button-full button-positive" ng-click="logout()" ng-show="loggedIn">
+                    Logout
+                </button>
+                <button class="button button-full button-positive" ng-click="syncWithFirebase()">
+                    Sync
+                </button>
             </ion-content>
         </ion-side-menu>
     </ion-side-menus>
@@ -223,6 +239,29 @@
                     <div class="item item-divider">
                         <h2>Payment Status:<span ng-show="entry.paid" class="status-active">Paid</span><span ng-show="!entry.paid" class="status-inactive">UnPaid</span></h2>
                     </div>
+                </div>
+            </ion-content>
+        </ion-modal-view>
+    </script>
+    <script id="login.html" type="text/ng-template">
+        <ion-modal-view>
+            <ion-header-bar class="bar bar-header bar-calm">
+                <h1 class="title">Login</h1>
+                <button class="button button-clear button-primary" ng-click="show_login_modal.hide()">Cancel</button>
+            </ion-header-bar>
+            <ion-content class="padding" scroll="true">
+                <div class="list">
+                    <label class="item item-input item-stacked-label">
+                        <span class="input-label">User Name</span>
+                        <input type="text" placeholder="Username" ng-model="username">
+                    </label>
+                    <label class="item item-input item-stacked-label">
+                        <span class="input-label">Password</span>
+                        <input type="text" placeholder="Password" ng-model="pass">
+                    </label>
+                    <button class="button button-full button-calm" ng-click="signin(username,pass)">
+                        Submit
+                    </button>
                 </div>
             </ion-content>
         </ion-modal-view>
