@@ -51,6 +51,7 @@ angular.module('ionicApp').controller('AppCtrl', function($firebaseAuth, $cordov
         $rootScope.$on('$cordovaNetwork:online', function(event, networkState) {
             var onlineState = networkState;
             isOnline = true;
+            isOffline = false;
             alert("online");
         });
 
@@ -58,7 +59,11 @@ angular.module('ionicApp').controller('AppCtrl', function($firebaseAuth, $cordov
         $rootScope.$on('$cordovaNetwork:offline', function(event, networkState) {
             var offlineState = networkState;
             isOffline = true;
+            isOnline = false;
             alert("offline");
+            auth.$signOut();
+            $scope.loggedIn = false;
+            $scope.uid = "";
         });
 
         $scope.duties = [];
