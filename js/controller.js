@@ -62,14 +62,14 @@ angular.module('ionicApp').controller('AppCtrl', function($firebaseAuth, $cordov
 
     $scope.syncWithFirebase = function(status) {
         // console.log('test');
-        if (!$scope.isOnline) {
-            alert("Your are not online.");
-            auth.$signOut();
-            $scope.loggedIn = false;
-            $scope.uid = "";
-        } else if (!$scope.loggedIn) {
-            alert("You are not loggedIn");
-        } else {
+        // if (!$scope.isOnline) {
+        //     //alert("Your are not online.");
+        //     auth.$signOut();
+        //     $scope.loggedIn = false;
+        //     $scope.uid = "";
+        // } else if (!$scope.loggedIn) {
+        //     alert("You are not loggedIn");
+        // } else {
             $scope.showloader();
             var child = ref.child($scope.uid);
             var childs = $firebaseArray(child);
@@ -157,7 +157,7 @@ angular.module('ionicApp').controller('AppCtrl', function($firebaseAuth, $cordov
             }).catch(function(error) {
                 alert("Error:", error);
             });
-        }
+        // }
 
     }
 
@@ -169,6 +169,7 @@ angular.module('ionicApp').controller('AppCtrl', function($firebaseAuth, $cordov
         $scope.duties = angular.fromJson(localStorage.getItem("duties"));
         console.log($scope.duties);
     }
+
     /**
      * [Modal for add,show and edit records]
      * @param  {[type]} modal) {                       $scope.modal [description]
