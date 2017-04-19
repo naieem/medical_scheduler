@@ -92,8 +92,8 @@ angular.module('ionicApp').controller('AppCtrl', function($ionicPopup, $firebase
             console.log($scope.uid);
             childs.$loaded().then(function(arr) {
                 // if (status === "empty") {
-                //     if (arr.length < 1) {
-                //         $scope.showAlert("You have no data");
+                // if (arr.length < 1) {
+                //     $scope.showAlert("You have no data");
                 //     } else if ($scope.duties == null || $scope.duties == undefined || $scope.duties == '') {
                 //         for (var i = 0; i < arr.length; i++) {
                 //             // if (arr[i].$id != "backup") {
@@ -103,14 +103,21 @@ angular.module('ionicApp').controller('AppCtrl', function($ionicPopup, $firebase
                 //     }
                 // } else {
                 if ($scope.duties == null || $scope.duties == undefined || $scope.duties == '') {
-                    for (var i = 0; i < arr.length; i++) {
-                        $scope.duties.push(arr[i]);
+                    if (arr.length < 1) {
+                        setTimeout(function() {
+                            hideloader();
+                            $scope.showAlert("You have no data");
+                        }, 3000);
+                    } else {
+                        for (var i = 0; i < arr.length; i++) {
+                            $scope.duties.push(arr[i]);
+                        }
+                        localStorage.setItem("duties", angular.toJson($scope.duties));
+                        setTimeout(function() {
+                            hideloader();
+                            $scope.showAlert("Update Complete");
+                        }, 3000);
                     }
-                    localStorage.setItem("duties", angular.toJson($scope.duties));
-                    setTimeout(function() {
-                        hideloader();
-                        $scope.showAlert("Update Complete");
-                    }, 3000);
 
                 } else {
                     for (var i = 0; i < arr.length; i++) {
@@ -160,7 +167,16 @@ angular.module('ionicApp').controller('AppCtrl', function($ionicPopup, $firebase
                         }
                         setTimeout(function() {
                             hideloader();
-                            $scope.showAlert("Reset Complete");
+                            var alertPopup = $ionicPopup.alert({
+                                title: 'Message',
+                                template: 'Reset Complete'
+                            });
+
+                            alertPopup.then(function(res) {
+                                $scope.duties=[];
+                                localStorage.setItem("duties", '');
+                                $scope.syncWithFirebase();
+                            });
                         }, 3000);
 
                     }).catch(function(error) {
