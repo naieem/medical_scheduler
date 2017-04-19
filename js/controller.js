@@ -4,7 +4,7 @@
  * @param  {[type]} $ionicModal      [description]
  * @param  {Array}  ionicDatePicker
  */
-angular.module('ionicApp').controller('AppCtrl', function($firebaseAuth, $cordovaNetwork, $firebaseArray, $rootScope, $scope, $ionicModal, $ionicPopup, $cordovaToast, $cordovaLocalNotification, $ionicSideMenuDelegate, $ionicLoading) {
+angular.module('ionicApp').controller('AppCtrl', function($ionicPopup, $firebaseAuth, $cordovaNetwork, $firebaseArray, $rootScope, $scope, $ionicModal, $ionicPopup, $cordovaToast, $cordovaLocalNotification, $ionicSideMenuDelegate, $ionicLoading) {
     $scope.duty = [];
     $scope.mnth = [];
     $scope.search = [];
@@ -53,33 +53,44 @@ angular.module('ionicApp').controller('AppCtrl', function($firebaseAuth, $cordov
 
     }, false);
 
+    $scope.showAlert = function(msg) {
+        var alertPopup = $ionicPopup.alert({
+            title: 'Message',
+            template: msg
+        });
 
-    $scope.showloader = function() {
+        alertPopup.then(function(res) {
+            console.log('Thank you');
+        });
+    };
+
+    function showloader() {
         $ionicLoading.show({ template: 'Please wait...' });
     };
 
-    $scope.hideloader = function() {
+    function hideloader() {
         $ionicLoading.hide();
     };
 
+    // $scope.showloader();
     $scope.syncWithFirebase = function(status) {
         // console.log('test');
         if ($scope.isOffline) {
-            alert("Your are offline.");
+            $scope.showAlert("You are offline");
             auth.$signOut();
             $scope.loggedIn = false;
             $scope.uid = "";
         } else if (!$scope.loggedIn) {
-            alert("You are not loggedIn");
+            $scope.showAlert("Please loggedIn First");
         } else {
-            $scope.showloader();
+            showloader();
             var child = ref.child($scope.uid);
             var childs = $firebaseArray(child);
             console.log($scope.uid);
             childs.$loaded().then(function(arr) {
                 if (status === "empty") {
                     if (arr.length < 1) {
-                        alert("You have no data");
+                        $scope.showAlert("You have no data");
                     } else if ($scope.duties == null || $scope.duties == undefined || $scope.duties == '') {
                         for (var i = 0; i < arr.length; i++) {
                             // if (arr[i].$id != "backup") {
@@ -95,10 +106,15 @@ angular.module('ionicApp').controller('AppCtrl', function($firebaseAuth, $cordov
                     for (var i = 0; i < $scope.duties.length; i++) {
                         childs.$add($scope.duties[i]);
                     }
+                    setTimeout(function() {
+                        hideloader();
+                        $scope.showAlert("Update Complete");
+                    }, 3000);
+                    // hideloader();
                 }
-                $scope.hideloader();
+
             }).catch(function(error) {
-                alert("Error:", error);
+                $scope.showAlert(error);
             });
         }
     }
@@ -138,14 +154,16 @@ angular.module('ionicApp').controller('AppCtrl', function($firebaseAuth, $cordov
      * signin function for the auth user
      */
     $scope.signin = function(username, pass) {
-        $scope.showloader();
+        showloader();
         // console.log(username, pass);
         auth.$signInWithEmailAndPassword(username, pass).then(function(firebaseUser) {
             console.log("Signed in as:", firebaseUser);
             $scope.useremail = firebaseUser.email;
             $scope.uid = firebaseUser.uid;
             $scope.loggedIn = true;
-            $scope.hideloader();
+            // $scope.hideloader();
+            hideloader();
+            $scope.showAlert("Signing Succesfull");
             $scope.show_login_modal.hide();
             // var child = firebase.database().ref().child($scope.uid);
             // var childs = $firebaseArray(child);
@@ -156,14 +174,12 @@ angular.module('ionicApp').controller('AppCtrl', function($firebaseAuth, $cordov
             // for (var i = 0; i < $scope.duties.length; i++) {
             //     childs.$add($scope.duties[i]);
             // }
-
-            $scope.hideloader();
             // }).catch(function(error) {
             //     alert("Error:", error);
             // });
         }).catch(function(error) {
-            console.error("Authentication failed:", error);
-            $scope.hideloader();
+            $scope.showAlert("Authentication Failed");
+            hideloader();
         });
         // }
     }
@@ -212,8 +228,8 @@ angular.module('ionicApp').controller('AppCtrl', function($firebaseAuth, $cordov
     $scope.show_login_modal_log = function() {
         //event.preventDefault();
         //$scope.dte = '';
-        alert($scope.isOnline);
-        alert($scope.isOffline);
+        // alert($scope.isOnline);
+        // alert($scope.isOffline);
         if ($scope.isOffline) {
             alert("You are offline");
         } else {
