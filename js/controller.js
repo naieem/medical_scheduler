@@ -22,15 +22,108 @@ angular.module('ionicApp').controller('AppCtrl', function($firebaseAuth, $cordov
         $scope.mnth[i] = month[i];
     }
     $scope.showloader = function() {
-        $ionicLoading.show({
-            template: 'Please wait...',
-        });
+        $ionicLoading.show({template: 'Please wait...'});
     };
 
     $scope.hideloader = function() {
         $ionicLoading.hide();
     };
 
+    $scope.syncWithFirebase = function(status) {
+        // console.log('test');
+        if (!$scope.isOnline) {
+            alert("Your are not online.");
+            auth.$signOut();
+            $scope.loggedIn = false;
+            $scope.uid = "";
+        } else if (!$scope.loggedIn) {
+            alert("You are not loggedIn");
+        } else {
+            $scope.showloader();
+            var child = ref.child($scope.uid);
+            var childs = $firebaseArray(child);
+            console.log($scope.uid);
+            childs.$loaded().then(function(arr) {
+                if (status === "empty") {
+                    if (arr.length < 1) {
+                        alert("You have no data");
+                    } else if ($scope.duties == null || $scope.duties == undefined || $scope.duties == '') {
+                        for (var i = 0; i < arr.length; i++) {
+                            // if (arr[i].$id != "backup") {
+                            $scope.duties.push(arr[i]);
+                            // }
+                        }
+                    }
+                } else {
+                    // if ($scope.duties.length > arr.length) {
+                    //     for (var i = 0; i < $scope.duties.length; i++) {
+                    //         childs.$add($scope.duties[i]);
+                    //     }
+                    // } else if ($scope.duties.length < arr.length) {
+                    //     for (var i = 0; i < $scope.duties.length; i++) {
+                    //         childs.$add($scope.duties[i]);
+                    //     }
+                    // }
+                    for (var i = 0; i < arr.length; i++) {
+                        childs.$remove(arr[i]);
+                    }
+                }
+                $scope.hideloader();
+
+                // console.log('from loop in loaded', arr);
+                // console.log($scope.duties);
+                // for (var i = 0; i < $scope.duties.length; i++) {
+                // if (arr[i].$id != "backup") {
+                //     // $scope.duties.push(arr[i]);
+                //     // console.log("firebase arry",typeof(arr[i]));
+                //     // console.log("scope arry",typeof($scope.duties[i]));
+                //     var t=0;
+                //     if($scope.duties[i].amount === arr[i].amount){
+                //         t++;
+                //     }
+                //     if($scope.duties[i].date === arr[i].date){
+                //         t++;
+                //     }
+                //     if($scope.duties[i].fulldate === arr[i].fulldate){
+                //         t++;
+                //     }
+                //     if($scope.duties[i].month === arr[i].month){
+                //         t++;
+                //     }
+                //     if($scope.duties[i].place === arr[i].place){
+                //         t++;
+                //     }
+                //     if($scope.duties[i].provider === arr[i].provider){
+                //         t++;
+                //     }
+                //     if($scope.duties[i].random === arr[i].random){
+                //         t++;
+                //     }
+                //     if($scope.duties[i].schedule === arr[i].schedule){
+                //         t++;
+                //     }
+                //     if($scope.duties[i].year === arr[i].year){
+                //         t++;
+                //     }
+                //     console.log(t);
+                //     if(t==9){
+                //         console.log('milche');
+                //     }
+                //     else{
+                //         console.log('na milenai');
+                //     }
+                // }
+                // }
+                // localStorage.setItem("duties", angular.toJson($scope.duties));
+                // localStorage.setItem("duties", $scope.duties);
+                // console.log('localstore', angular.fromJson(localStorage.getItem("duties")));
+            }).catch(function(error) {
+                alert("Error:", error);
+            });
+        }
+
+    }
+    
     document.addEventListener("deviceready", function() {
 
         var type = $cordovaNetwork.getNetwork();
@@ -46,15 +139,12 @@ angular.module('ionicApp').controller('AppCtrl', function($firebaseAuth, $cordov
         // }
         // listen for Online event
         $rootScope.$on('$cordovaNetwork:online', function(event, networkState) {
-            var onlineState = networkState;
             $scope.isOnline = true;
             $scope.isOffline = false;
             alert("online");
         });
-
         // listen for Offline event
         $rootScope.$on('$cordovaNetwork:offline', function(event, networkState) {
-            var offlineState = networkState;
             $scope.isOffline = true;
             $scope.isOnline = false;
             alert("offline");
@@ -65,112 +155,38 @@ angular.module('ionicApp').controller('AppCtrl', function($firebaseAuth, $cordov
 
     }, false);
 
-    $scope.duties = [];
-    $scope.duties = angular.fromJson(localStorage.getItem("duties"));
+    // $scope.duties = [];
+    // $scope.duties = angular.fromJson(localStorage.getItem("duties"));
+    if ($scope.duties == null || $scope.duties == undefined || $scope.duties == '') {
+        $scope.syncWithFirebase("empty");
+    } else {
+        $scope.duties = angular.fromJson(localStorage.getItem("duties"));
+        console.log($scope.duties);
+    }
     /**
      * [Modal for add,show and edit records]
      * @param  {[type]} modal) {                       $scope.modal [description]
      * @return {[type]}        [description]
      */
-    $ionicModal.fromTemplateUrl('add.html', { scope: $scope }).then(function(modal) {
+    $ionicModal.fromTemplateUrl('add.html', {scope: $scope}).then(function(modal) {
         $scope.modal = modal;
     });
 
-    $ionicModal.fromTemplateUrl('edit.html', { scope: $scope }).then(function(modal) {
+    $ionicModal.fromTemplateUrl('edit.html', {scope: $scope}).then(function(modal) {
         $scope.edit_modal = modal;
     });
-    $ionicModal.fromTemplateUrl('show.html', { scope: $scope }).then(function(modal) {
+    $ionicModal.fromTemplateUrl('show.html', {scope: $scope}).then(function(modal) {
         $scope.show_modal = modal;
     });
 
-    $ionicModal.fromTemplateUrl('login.html', { scope: $scope }).then(function(modal) {
+    $ionicModal.fromTemplateUrl('login.html', {scope: $scope}).then(function(modal) {
         $scope.show_login_modal = modal;
     });
 
-    $scope.syncWithFirebase = function() {
-            // console.log('test');
-            if (!$scope.isOnline) {
-                alert("Your are not online.");
-                auth.$signOut();
-                $scope.loggedIn = false;
-                $scope.uid = "";
-            } else if (!$scope.loggedIn) {
-                alert("You are not loggedIn");
-            } else {
-                var child = ref.child($scope.uid);
-                console.log($scope.uid);
-                child.$loaded().then(function(arr) {
-                    if ($scope.duties.length > arr.length) {
-                        for (var i = arr.length; i < $scope.duties.length; i++) {
-                            child.$add($scope.duties[i]);
-                        }
-                    } else if ($scope.duties == null || $scope.duties == undefined || $scope.duties == '') {
-                        for (var i = 0; i < arr.length; i++) {
-                            // if (arr[i].$id != "backup") {
-                            $scope.duties.push(arr[i]);
-                            // }
-                        }
-                    }
-                    $scope.hideloader();
-
-                    // console.log('from loop in loaded', arr);
-                    // console.log($scope.duties);
-                    // for (var i = 0; i < $scope.duties.length; i++) {
-                    // if (arr[i].$id != "backup") {
-                    //     // $scope.duties.push(arr[i]);
-                    //     // console.log("firebase arry",typeof(arr[i]));
-                    //     // console.log("scope arry",typeof($scope.duties[i]));
-                    //     var t=0;
-                    //     if($scope.duties[i].amount === arr[i].amount){
-                    //         t++;
-                    //     }
-                    //     if($scope.duties[i].date === arr[i].date){
-                    //         t++;
-                    //     }
-                    //     if($scope.duties[i].fulldate === arr[i].fulldate){
-                    //         t++;
-                    //     }
-                    //     if($scope.duties[i].month === arr[i].month){
-                    //         t++;
-                    //     }
-                    //     if($scope.duties[i].place === arr[i].place){
-                    //         t++;
-                    //     }
-                    //     if($scope.duties[i].provider === arr[i].provider){
-                    //         t++;
-                    //     }
-                    //     if($scope.duties[i].random === arr[i].random){
-                    //         t++;
-                    //     }
-                    //     if($scope.duties[i].schedule === arr[i].schedule){
-                    //         t++;
-                    //     }
-                    //     if($scope.duties[i].year === arr[i].year){
-                    //         t++;
-                    //     }
-                    //     console.log(t);
-                    //     if(t==9){
-                    //         console.log('milche');
-                    //     }
-                    //     else{
-                    //         console.log('na milenai');
-                    //     }
-                    // }
-                    // }
-                    // localStorage.setItem("duties", angular.toJson($scope.duties));
-                    // localStorage.setItem("duties", $scope.duties);
-                    // console.log('localstore', angular.fromJson(localStorage.getItem("duties")));
-                }).catch(function(error) {
-                    alert("Error:", error);
-                });
-            }
-
-        }
-        /*
-         * signin function for the auth user
-         */
+    /*
+     * signin function for the auth user
+     */
     $scope.signin = function(username, pass) {
-
         $scope.showloader();
         // console.log(username, pass);
         auth.$signInWithEmailAndPassword(username, pass).then(function(firebaseUser) {
@@ -180,17 +196,17 @@ angular.module('ionicApp').controller('AppCtrl', function($firebaseAuth, $cordov
             $scope.loggedIn = true;
             $scope.hideloader();
             $scope.show_login_modal.hide();
-            var child = firebase.database().ref().child($scope.uid);
-            var childs=$firebaseArray(child);
+            // var child = firebase.database().ref().child($scope.uid);
+            // var childs = $firebaseArray(child);
             // console.log(child);
-            console.log($scope.uid);
+            // console.log($scope.uid);
             // lists.$loaded().then(function(arr) {
-                $scope.duties = angular.fromJson(localStorage.getItem("duties"));
-                for (var i = 0; i < $scope.duties.length; i++) {
-                    childs.$add($scope.duties[i]);
-                }
+            // $scope.duties = angular.fromJson(localStorage.getItem("duties"));
+            // for (var i = 0; i < $scope.duties.length; i++) {
+            //     childs.$add($scope.duties[i]);
+            // }
 
-                $scope.hideloader();
+            $scope.hideloader();
             // }).catch(function(error) {
             //     alert("Error:", error);
             // });
@@ -215,9 +231,9 @@ angular.module('ionicApp').controller('AppCtrl', function($firebaseAuth, $cordov
         $scope.search.month = dt;
     }
     $scope.update_year = function(dt) {
-            $scope.search.year = dt;
-        }
-        /*
+        $scope.search.year = dt;
+    }
+    /*
          * Order by date
          */
     $scope.orderByDate = function(item) {
@@ -233,12 +249,12 @@ angular.module('ionicApp').controller('AppCtrl', function($firebaseAuth, $cordov
      * @param {[type]} event [description]
      */
     $scope.add_modal = function() {
-            //event.preventDefault();
-            //$scope.dte = '';
-            $scope.show_add_true = true;
-            $scope.modal.show();
-        }
-        /*
+        //event.preventDefault();
+        //$scope.dte = '';
+        $scope.show_add_true = true;
+        $scope.modal.show();
+    }
+    /*
          *Show login modal
          */
 
@@ -254,93 +270,95 @@ angular.module('ionicApp').controller('AppCtrl', function($firebaseAuth, $cordov
         }
     }
     $scope.add_entry = function(event) {
-            event.preventDefault();
-            if ($scope.duty.place == undefined || $scope.duty.place == "" || $scope.duty.dte == undefined || $scope.duty.dte == "" || $scope.duty.amount == undefined || $scope.duty.amount == "" || $scope.duty.provider == undefined || $scope.duty.provider == "" || $scope.duty.schedule == undefined || $scope.duty.schedule == "") {
-                $cordovaToast.showShortBottom('Please Provide All Information To Add Schedule').then(function(success) {}, function(error) {
-                    alert(error);
-                });
-            } else {
-                var temp_date = new Date($scope.duty.dte);
-                var paid = $scope.duty.paid ? true : false;
-                var mnth = month[temp_date.getMonth()];
-                var dt = temp_date.getDate();
-                var yr = temp_date.getFullYear();
-                //var rnd = randomString(5);
-                var rnd = Math.floor((Math.random() * 1000) + 1);
+        event.preventDefault();
+        if ($scope.duty.place == undefined || $scope.duty.place == "" || $scope.duty.dte == undefined || $scope.duty.dte == "" || $scope.duty.amount == undefined || $scope.duty.amount == "" || $scope.duty.provider == undefined || $scope.duty.provider == "" || $scope.duty.schedule == undefined || $scope.duty.schedule == "") {
+            $cordovaToast.showShortBottom('Please Provide All Information To Add Schedule').then(function(success) {}, function(error) {
+                alert(error);
+            });
+        } else {
+            var temp_date = new Date($scope.duty.dte);
+            var paid = $scope.duty.paid
+                ? true
+                : false;
+            var mnth = month[temp_date.getMonth()];
+            var dt = temp_date.getDate();
+            var yr = temp_date.getFullYear();
+            //var rnd = randomString(5);
+            var rnd = Math.floor((Math.random() * 1000) + 1);
 
-                var data = {
-                        place: $scope.duty.place,
-                        fulldate: $scope.duty.dte,
-                        schedule: $scope.duty.schedule,
-                        provider: $scope.duty.provider,
-                        amount: $scope.duty.amount,
-                        month: mnth,
-                        date: dt,
-                        year: yr,
-                        random: rnd,
-                        paid: paid
-                    }
-                    // console.log(data);
-                $scope.duties.push(data);
-                $cordovaLocalNotification.schedule({
-                    id: rnd,
-                    title: 'Duty Notification',
-                    text: 'You have a duty today in: ' + $scope.duty.place + ' Schedule: ' + $scope.duty.schedule,
-                    firstAt: $scope.duty.dte
-                }).then(function(result) {
-                    //alert(result);
-                });
-                $scope.duty = [];
-                //$scope.dte = '';
-                localStorage.setItem("duties", angular.toJson($scope.duties));
-                var t = angular.fromJson(localStorage.getItem('duties'));
-                // console.log(t);
-                $cordovaToast.showShortBottom('New Schedule Added').then(function(success) {}, function(error) {
-                    alert(error);
-                });
-                $scope.modal.hide();
+            var data = {
+                place: $scope.duty.place,
+                fulldate: $scope.duty.dte,
+                schedule: $scope.duty.schedule,
+                provider: $scope.duty.provider,
+                amount: $scope.duty.amount,
+                month: mnth,
+                date: dt,
+                year: yr,
+                random: rnd,
+                paid: paid
             }
+            // console.log(data);
+            $scope.duties.push(data);
+            $cordovaLocalNotification.schedule({
+                id: rnd,
+                title: 'Duty Notification',
+                text: 'You have a duty today in: ' + $scope.duty.place + ' Schedule: ' + $scope.duty.schedule,
+                firstAt: $scope.duty.dte
+            }).then(function(result) {
+                //alert(result);
+            });
+            $scope.duty = [];
+            //$scope.dte = '';
+            localStorage.setItem("duties", angular.toJson($scope.duties));
+            var t = angular.fromJson(localStorage.getItem('duties'));
+            // console.log(t);
+            $cordovaToast.showShortBottom('New Schedule Added').then(function(success) {}, function(error) {
+                alert(error);
+            });
+            $scope.modal.hide();
         }
-        /**
+    }
+    /**
          * [delete description]
          * @param  {[int]} dt [ index of the array ]
          * @return {[type]}    [description]
          */
     $scope.delete = function(dt) {
-            var dcsn = confirm("Do you want to delete!");
-            if (dcsn == true) {
-                for (var i = 0; i < $scope.duties.length; i++) {
-                    if ($scope.duties[i].random == dt) {
-                        $scope.duties.splice(i, 1);
-                        localStorage.setItem("duties", angular.toJson($scope.duties));
-                        break;
-                    }
+        var dcsn = confirm("Do you want to delete!");
+        if (dcsn == true) {
+            for (var i = 0; i < $scope.duties.length; i++) {
+                if ($scope.duties[i].random == dt) {
+                    $scope.duties.splice(i, 1);
+                    localStorage.setItem("duties", angular.toJson($scope.duties));
+                    break;
                 }
             }
         }
-        /**
+    }
+    /**
          * [edit description]
          * @param  {[int]} dt [ index of the array]
          * @return {[type]}    [description]
          */
     $scope.edit = function(dt) {
-            for (var i = 0; i < $scope.duties.length; i++) {
-                if ($scope.duties[i].random == dt) {
-                    $scope.edit_data = [];
-                    $scope.edit_data.place = $scope.duties[i].place;
-                    $scope.edit_data.schedule = $scope.duties[i].schedule;
-                    $scope.edit_data.provider = $scope.duties[i].provider;
-                    $scope.edit_data.paid = $scope.duties[i].paid;
-                    $scope.edit_data.amount = $scope.duties[i].amount;
-                    $scope.edit_data.dte = new Date($scope.duties[i].fulldate);
-                    $scope.edit_data.index = i;
-                    $scope.edit_modal.show();
-                    // console.log($scope.edit_data);
-                    break;
-                }
+        for (var i = 0; i < $scope.duties.length; i++) {
+            if ($scope.duties[i].random == dt) {
+                $scope.edit_data = [];
+                $scope.edit_data.place = $scope.duties[i].place;
+                $scope.edit_data.schedule = $scope.duties[i].schedule;
+                $scope.edit_data.provider = $scope.duties[i].provider;
+                $scope.edit_data.paid = $scope.duties[i].paid;
+                $scope.edit_data.amount = $scope.duties[i].amount;
+                $scope.edit_data.dte = new Date($scope.duties[i].fulldate);
+                $scope.edit_data.index = i;
+                $scope.edit_modal.show();
+                // console.log($scope.edit_data);
+                break;
             }
         }
-        /**
+    }
+    /**
          * [Update entry]
          * @param  {[type]} index [description]
          * @return {[type]}       [description]
@@ -366,7 +384,9 @@ angular.module('ionicApp').controller('AppCtrl', function($firebaseAuth, $cordov
             $scope.duties[index].month = mnth;
             $scope.duties[index].date = dt;
             $scope.duties[index].year = yr;
-            $scope.duties[index].paid = $scope.edit_data.paid ? true : false;
+            $scope.duties[index].paid = $scope.edit_data.paid
+                ? true
+                : false;
 
             localStorage.setItem("duties", angular.toJson($scope.duties));
             $cordovaLocalNotification.schedule({
@@ -509,7 +529,5 @@ angular.module('ionicApp').controller('AppCtrl', function($firebaseAuth, $cordov
     //   lists.$add($scope.duties[i]);
     // }
     // }
-
-
 
 });
