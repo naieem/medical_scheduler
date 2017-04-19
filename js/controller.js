@@ -88,16 +88,27 @@ angular.module('ionicApp').controller('AppCtrl', function($ionicPopup, $firebase
             var childs = $firebaseArray(child);
             console.log($scope.uid);
             childs.$loaded().then(function(arr) {
-                if (status === "empty") {
-                    if (arr.length < 1) {
-                        $scope.showAlert("You have no data");
-                    } else if ($scope.duties == null || $scope.duties == undefined || $scope.duties == '') {
-                        for (var i = 0; i < arr.length; i++) {
-                            // if (arr[i].$id != "backup") {
-                            $scope.duties.push(arr[i]);
-                            // }
-                        }
+                // if (status === "empty") {
+                //     if (arr.length < 1) {
+                //         $scope.showAlert("You have no data");
+                //     } else if ($scope.duties == null || $scope.duties == undefined || $scope.duties == '') {
+                //         for (var i = 0; i < arr.length; i++) {
+                //             // if (arr[i].$id != "backup") {
+                //             $scope.duties.push(arr[i]);
+                //             // }
+                //         }
+                //     }
+                // } else {
+                if ($scope.duties == null || $scope.duties == undefined || $scope.duties == '') {
+                    for (var i = 0; i < arr.length; i++) {
+                        $scope.duties.push(arr[i]);
                     }
+                    localStorage.setItem("duties", angular.toJson($scope.duties));
+                    setTimeout(function() {
+                        hideloader();
+                        $scope.showAlert("Update Complete");
+                    }, 3000);
+
                 } else {
                     for (var i = 0; i < arr.length; i++) {
                         childs.$remove(arr[i]);
@@ -110,8 +121,9 @@ angular.module('ionicApp').controller('AppCtrl', function($ionicPopup, $firebase
                         hideloader();
                         $scope.showAlert("Update Complete");
                     }, 3000);
-                    // hideloader();
                 }
+                // hideloader();
+                // }
 
             }).catch(function(error) {
                 $scope.showAlert(error);
@@ -123,7 +135,8 @@ angular.module('ionicApp').controller('AppCtrl', function($ionicPopup, $firebase
     $scope.duties = angular.fromJson(localStorage.getItem("duties"));
     setTimeout(function() {
         if ($scope.duties == null || $scope.duties == undefined || $scope.duties == '') {
-            $scope.syncWithFirebase("empty");
+            // $scope.syncWithFirebase("empty");
+            $scope.showAlert("You have no data in localstorage.Please sync with online database to get all your data");
         } else {
             $scope.duties = angular.fromJson(localStorage.getItem("duties"));
             console.log($scope.duties);
@@ -161,6 +174,8 @@ angular.module('ionicApp').controller('AppCtrl', function($ionicPopup, $firebase
             $scope.useremail = firebaseUser.email;
             $scope.uid = firebaseUser.uid;
             $scope.loggedIn = true;
+            $scope.username = "";
+            $scope.pass = "";
             // $scope.hideloader();
             hideloader();
             $scope.showAlert("Signing Succesfull");
