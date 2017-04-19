@@ -107,6 +107,8 @@ angular.module('ionicApp').controller('AppCtrl', function($ionicPopup, $firebase
                         setTimeout(function() {
                             hideloader();
                             $scope.showAlert("You have no data");
+                            $scope.duties=arr;
+                            localStorage.setItem("duties", angular.toJson($scope.duties));
                         }, 3000);
                     } else {
                         for (var i = 0; i < arr.length; i++) {
@@ -174,7 +176,7 @@ angular.module('ionicApp').controller('AppCtrl', function($ionicPopup, $firebase
 
                             alertPopup.then(function(res) {
                                 $scope.duties=[];
-                                localStorage.setItem("duties", '');
+                                // localStorage.setItem("duties", angular.toJson($scope.duties));
                                 $scope.syncWithFirebase();
                             });
                         }, 3000);
@@ -339,6 +341,9 @@ angular.module('ionicApp').controller('AppCtrl', function($ionicPopup, $firebase
                     }
                     // console.log(data);
                 $scope.duties.push(data);
+                localStorage.setItem("duties", angular.toJson($scope.duties));
+                var t = angular.fromJson(localStorage.getItem('duties'));
+                console.log(t);
                 $cordovaLocalNotification.schedule({
                     id: rnd,
                     title: 'Duty Notification',
@@ -349,9 +354,7 @@ angular.module('ionicApp').controller('AppCtrl', function($ionicPopup, $firebase
                 });
                 $scope.duty = [];
                 //$scope.dte = '';
-                localStorage.setItem("duties", angular.toJson($scope.duties));
-                var t = angular.fromJson(localStorage.getItem('duties'));
-                // console.log(t);
+                
                 $cordovaToast.showShortBottom('New Schedule Added').then(function(success) {}, function(error) {
                     alert(error);
                 });
