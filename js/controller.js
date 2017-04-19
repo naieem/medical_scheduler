@@ -54,7 +54,6 @@ angular.module('ionicApp').controller('AppCtrl', function($ionicPopup, $firebase
             $scope.uid = "";
         });
 
-
     }, false);
 
     $scope.showAlert = function(msg) {
@@ -133,6 +132,46 @@ angular.module('ionicApp').controller('AppCtrl', function($ionicPopup, $firebase
                 $scope.showAlert(error);
             });
         }
+    }
+
+    $scope.resetFirebase = function() {
+        var confirmPopup = $ionicPopup.confirm({
+            title: 'Reset Online Database',
+            template: 'Are you sure you want to reset online database?'
+        });
+
+        confirmPopup.then(function(res) {
+            if (res) {
+                if ($scope.isOffline) {
+                    $scope.showAlert("You are offline");
+                    auth.$signOut();
+                    $scope.loggedIn = false;
+                    $scope.uid = "";
+                } else if (!$scope.loggedIn) {
+                    $scope.showAlert("Please loggedIn First");
+                } else {
+                    showloader();
+                    var child = ref.child($scope.uid);
+                    var childs = $firebaseArray(child);
+                    console.log($scope.uid);
+                    childs.$loaded().then(function(arr) {
+                        for (var i = 0; i < arr.length; i++) {
+                            childs.$remove(arr[i]);
+                        }
+                        setTimeout(function() {
+                            hideloader();
+                            $scope.showAlert("Reset Complete");
+                        }, 3000);
+
+                    }).catch(function(error) {
+                        $scope.showAlert(error);
+                    });
+                }
+            } else {
+                console.log('You are not sure');
+            }
+        });
+
     }
 
     $scope.duties = [];
