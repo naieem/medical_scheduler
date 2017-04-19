@@ -28,6 +28,36 @@ angular.module('ionicApp').controller('AppCtrl', function($firebaseAuth, $cordov
     $scope.hideloader = function() {
         $ionicLoading.hide();
     };
+    document.addEventListener("deviceready", function() {
+
+        var type = $cordovaNetwork.getNetwork();
+
+        $scope.isOnline = $cordovaNetwork.isOnline();
+
+        $scope.isOffline = $cordovaNetwork.isOffline();
+        // if($scope.isOnline){
+        //   $scope.duties = angular.fromJson(localStorage.getItem("duties"));
+        //   for (var i = 0; i < $scope.duties.length; i++) {
+        //     lists.$add($scope.duties[i]);
+        //   }
+        // }
+        // listen for Online event
+        $rootScope.$on('$cordovaNetwork:online', function(event, networkState) {
+            $scope.isOnline = true;
+            $scope.isOffline = false;
+            alert("online");
+        });
+        // listen for Offline event
+        $rootScope.$on('$cordovaNetwork:offline', function(event, networkState) {
+            $scope.isOffline = true;
+            $scope.isOnline = false;
+            alert("offline");
+            auth.$signOut();
+            $scope.loggedIn = false;
+            $scope.uid = "";
+        });
+
+    }, false);
 
     $scope.syncWithFirebase = function(status) {
         // console.log('test');
@@ -123,39 +153,8 @@ angular.module('ionicApp').controller('AppCtrl', function($firebaseAuth, $cordov
         }
 
     }
-    
-    document.addEventListener("deviceready", function() {
 
-        var type = $cordovaNetwork.getNetwork();
-
-        $scope.isOnline = $cordovaNetwork.isOnline();
-
-        $scope.isOffline = $cordovaNetwork.isOffline();
-        // if($scope.isOnline){
-        //   $scope.duties = angular.fromJson(localStorage.getItem("duties"));
-        //   for (var i = 0; i < $scope.duties.length; i++) {
-        //     lists.$add($scope.duties[i]);
-        //   }
-        // }
-        // listen for Online event
-        $rootScope.$on('$cordovaNetwork:online', function(event, networkState) {
-            $scope.isOnline = true;
-            $scope.isOffline = false;
-            alert("online");
-        });
-        // listen for Offline event
-        $rootScope.$on('$cordovaNetwork:offline', function(event, networkState) {
-            $scope.isOffline = true;
-            $scope.isOnline = false;
-            alert("offline");
-            auth.$signOut();
-            $scope.loggedIn = false;
-            $scope.uid = "";
-        });
-
-    }, false);
-
-    // $scope.duties = [];
+    $scope.duties = [];
     // $scope.duties = angular.fromJson(localStorage.getItem("duties"));
     if ($scope.duties == null || $scope.duties == undefined || $scope.duties == '') {
         $scope.syncWithFirebase("empty");
