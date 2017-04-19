@@ -38,13 +38,17 @@ angular.module('ionicApp').controller('AppCtrl', function($ionicPopup, $firebase
         $rootScope.$on('$cordovaNetwork:online', function(event, networkState) {
             $scope.isOnline = true;
             $scope.isOffline = false;
-            alert("online");
+            $cordovaToast.showShortBottom('You are online').then(function(success) {}, function(error) {
+                alert(error);
+            });
         });
         // listen for Offline event
         $rootScope.$on('$cordovaNetwork:offline', function(event, networkState) {
             $scope.isOffline = true;
             $scope.isOnline = false;
-            alert("offline");
+            $cordovaToast.showShortBottom('You are offline').then(function(success) {}, function(error) {
+                alert(error);
+            });
             auth.$signOut();
             $scope.loggedIn = false;
             $scope.uid = "";
@@ -246,7 +250,7 @@ angular.module('ionicApp').controller('AppCtrl', function($ionicPopup, $firebase
         // alert($scope.isOnline);
         // alert($scope.isOffline);
         if ($scope.isOffline) {
-            alert("You are offline");
+            $scope.showAlert("You are offline");
         } else {
             $scope.show_login_modal.show();
         }
