@@ -107,14 +107,15 @@ angular.module('ionicApp').controller('AppCtrl', function($ionicPopup, $firebase
                         setTimeout(function() {
                             hideloader();
                             $scope.showAlert("You have no data");
-                            $scope.duties = arr;
-                            localStorage.setItem("duties", angular.toJson($scope.duties));
+                            $scope.duties = [];
+                            localStorage.setItem("duties", 'null');
                         }, 3000);
                     } else {
                         $scope.duties=[];
                         for (var i = 0; i < arr.length; i++) {
                             arr[i].fulldate=new Date(arr[i].date+arr[i].month+arr[i].year);
-                            $scope.duties.push(arr[i]);
+                            // $scope.duties.push(arr[i]);
+                            $scope.duties[i]=arr[i];
                         }
                         localStorage.setItem("duties", angular.toJson($scope.duties));
                         setTimeout(function() {
@@ -143,6 +144,8 @@ angular.module('ionicApp').controller('AppCtrl', function($ionicPopup, $firebase
             }).catch(function(error) {
                 $scope.showAlert(error);
             });
+            console.log(localStorage.getItem("duties"));
+            console.log($scope.duties);
         }
     }
 
@@ -179,7 +182,7 @@ angular.module('ionicApp').controller('AppCtrl', function($ionicPopup, $firebase
 
                             alertPopup.then(function(res) {
                                 $scope.duties = [];
-                                // localStorage.setItem("duties", angular.toJson($scope.duties));
+                                localStorage.setItem("duties", 'null');
                                 $scope.syncWithFirebase();
                             });
                         }, 3000);
