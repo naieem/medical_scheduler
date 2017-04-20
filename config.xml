@@ -2,7 +2,9 @@
 <widget xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0" id="com.techynaf.medicalscheduler" version="1.0.0">
     <name>Medical Scheduler</name>
     <description>
-        This application will help doctors to keep their duty records and also calculate their earnings through duty. A dynamic search and calculate feature is added with this application. Doctors can search their duty schedule by month, year and also by the place or their duty. It will automatically calculate the earnings according to the search criteria and will show the exact result as expected. Another huge advantage of the application is doctors duty entry will automatically be scheduled. So doctors will get a notification of their duty with details in their notification bar at 12AM of the exact day of duty. It is very lightweight and easy to use. Interface is very simple but attractive. Hope doctors will get this app very much friendly to use.
+        This application will help doctors to keep their duty records and also calculate their earnings through duty. A dynamic search and calculate feature is added with this application. Doctors can search their duty schedule by month, year and also by the
+        place or their duty. It will automatically calculate the earnings according to the search criteria and will show the exact result as expected. Another huge advantage of the application is doctors duty entry will automatically be scheduled. So doctors
+        will get a notification of their duty with details in their notification bar at 12AM of the exact day of duty. It is very lightweight and easy to use. Interface is very simple but attractive. Hope doctors will get this app very much friendly to use.
     </description>
     <author href="http://naieem.me" email="naieem.com">
         Naieem
@@ -12,12 +14,12 @@
         following tag to your config.xml; you will still have the INTERNET
         permission on your app, which PhoneGap requires.
     -->
-    <preference name="webviewbounce" value="false" />
-    <preference name="UIWebViewBounce" value="false" />
-    <preference name="DisallowOverscroll" value="true" />
-    <preference name="SplashScreenDelay" value="5000" />
-    <preference name="android-minSdkVersion" value="16" />
-    <preference name="BackupWebStorage" value="none" />
+    <preference name="webviewbounce" value="false"/>
+    <preference name="UIWebViewBounce" value="false"/>
+    <preference name="DisallowOverscroll" value="true"/>
+    <preference name="SplashScreenDelay" value="5000"/>
+    <preference name="android-minSdkVersion" value="16"/>
+    <preference name="BackupWebStorage" value="none"/>
     <!-- Define a specific version of PhoneGap to build into your app. -->
     <!-- <preference name="phonegap-version"       value="3.5.0" /> -->
     <!-- Plugins -->
@@ -37,15 +39,15 @@
     <plugin name="cordova-plugin-globalization" />
     <plugin name="cordova-plugin-inappbrowser" />
     <plugin name="cordova-plugin-media" />-->
-    <plugin name="cordova-plugin-network-information" />
-    <plugin name="cordova-plugin-app-event" />
-    <plugin name="cordova-plugin-console" />
-    <plugin name="cordova-plugin-device" />
-    <plugin name="cordova-plugin-splashscreen" />
-    <plugin name="cordova-plugin-statusbar" />
-    <plugin name="cordova-plugin-x-toast" source="npm" />
-    <plugin name="de.appplant.cordova.plugin.local-notification" />
-    <plugin name="cordova-plugin-keyboard" />
+    <plugin name="cordova-plugin-network-information"/>
+    <plugin name="cordova-plugin-app-event"/>
+    <plugin name="cordova-plugin-console"/>
+    <plugin name="cordova-plugin-device"/>
+    <plugin name="cordova-plugin-splashscreen"/>
+    <plugin name="cordova-plugin-statusbar"/>
+    <plugin name="cordova-plugin-x-toast" source="npm"/>
+    <plugin name="de.appplant.cordova.plugin.local-notification"/>
+    <plugin name="cordova-plugin-keyboard"/>
     <!-- <plugin name="cordova-plugin-vibration" /> -->
     <!-- Third party plugins -->
     <!-- A list of available plugins are available at https://build.phonegap.com/plugins -->
@@ -53,9 +55,9 @@
         <plugin name="com.phonegap.plugins.barcodescanner" />
     -->
     <!-- Define app icon for each platform. -->
-    <icon src="dist/icon.png" />
+    <icon src="dist/icon.png"/>
     <!-- Define app splash screen for each platform. -->
-    <gap:splash src="dist/banner.jpg" />
+    <gap:splash src="dist/banner.jpg"/>
     <gap:config-file platform="ios" parent="CFBundleShortVersionString">
         <string>100</string>
     </gap:config-file>
@@ -68,21 +70,26 @@
         <access origin="http://phonegap.com" subdomains="true" />  - same as above, but including subdomains, such as http://build.phonegap.com/
         <access origin="http://phonegap.com" browserOnly="true" /> - only allows http://phonegap.com to be opened by the child browser.
     -->
-    <access origin="*" />
+    <access origin="*"/>
+
+    <platform name="android">
+        <preference name="android-targetSdkVersion" value="25"/>
+    </platform>
+
     <!-- Added the following intents to support the removal of whitelist code from base cordova to a plugin -->
     <!-- Whitelist configuration. Refer to https://cordova.apache.org/docs/en/edge/guide_appdev_whitelist_index.md.html -->
-    <plugin name="cordova-plugin-whitelist" version="1" />
-    <allow-intent href="http://*/*" />
-    <allow-intent href="https://*/*" />
-    <allow-intent href="tel:*" />
-    <allow-intent href="sms:*" />
-    <allow-intent href="mailto:*" />
-    <allow-intent href="geo:*" />
+    <plugin name="cordova-plugin-whitelist" version="1"/>
+    <allow-intent href="http://*/*"/>
+    <allow-intent href="https://*/*"/>
+    <allow-intent href="tel:*"/>
+    <allow-intent href="sms:*"/>
+    <allow-intent href="mailto:*"/>
+    <allow-intent href="geo:*"/>
     <platform name="android">
-        <allow-intent href="market:*" />
+        <allow-intent href="market:*"/>
     </platform>
     <platform name="ios">
-        <allow-intent href="itms:*" />
-        <allow-intent href="itms-apps:*" />
+        <allow-intent href="itms:*"/>
+        <allow-intent href="itms-apps:*"/>
     </platform>
 </widget>
