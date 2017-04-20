@@ -111,6 +111,7 @@ angular.module('ionicApp').controller('AppCtrl', function($ionicPopup, $firebase
                             localStorage.setItem("duties", angular.toJson($scope.duties));
                         }, 3000);
                     } else {
+                        $scope.duties=[];
                         for (var i = 0; i < arr.length; i++) {
                             arr[i].fulldate=new Date(arr[i].date+arr[i].month+arr[i].year);
                             $scope.duties.push(arr[i]);
