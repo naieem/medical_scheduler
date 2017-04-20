@@ -107,11 +107,12 @@ angular.module('ionicApp').controller('AppCtrl', function($ionicPopup, $firebase
                         setTimeout(function() {
                             hideloader();
                             $scope.showAlert("You have no data");
-                            $scope.duties=arr;
+                            $scope.duties = arr;
                             localStorage.setItem("duties", angular.toJson($scope.duties));
                         }, 3000);
                     } else {
                         for (var i = 0; i < arr.length; i++) {
+                            arr[i].fulldate=new Date(arr[i].date+arr[i].month+arr[i].year);
                             $scope.duties.push(arr[i]);
                         }
                         localStorage.setItem("duties", angular.toJson($scope.duties));
@@ -125,14 +126,15 @@ angular.module('ionicApp').controller('AppCtrl', function($ionicPopup, $firebase
                     for (var i = 0; i < arr.length; i++) {
                         childs.$remove(arr[i]);
                     }
-
-                    for (var i = 0; i < $scope.duties.length; i++) {
-                        childs.$add($scope.duties[i]);
-                    }
+                    setTimeout(function() {
+                        for (var i = 0; i < $scope.duties.length; i++) {
+                            childs.$add($scope.duties[i]);
+                        }
+                    }, 3000);
                     setTimeout(function() {
                         hideloader();
                         $scope.showAlert("Update Complete");
-                    }, 3000);
+                    }, 5000);
                 }
                 // hideloader();
                 // }
@@ -175,7 +177,7 @@ angular.module('ionicApp').controller('AppCtrl', function($ionicPopup, $firebase
                             });
 
                             alertPopup.then(function(res) {
-                                $scope.duties=[];
+                                $scope.duties = [];
                                 // localStorage.setItem("duties", angular.toJson($scope.duties));
                                 $scope.syncWithFirebase();
                             });
@@ -354,7 +356,7 @@ angular.module('ionicApp').controller('AppCtrl', function($ionicPopup, $firebase
                 });
                 $scope.duty = [];
                 //$scope.dte = '';
-                
+
                 $cordovaToast.showShortBottom('New Schedule Added').then(function(success) {}, function(error) {
                     alert(error);
                 });
@@ -392,7 +394,7 @@ angular.module('ionicApp').controller('AppCtrl', function($ionicPopup, $firebase
                     $scope.edit_data.provider = $scope.duties[i].provider;
                     $scope.edit_data.paid = $scope.duties[i].paid;
                     $scope.edit_data.amount = $scope.duties[i].amount;
-                    $scope.edit_data.dte = new Date($scope.duties[i].fulldate);
+                    $scope.edit_data.dte = new Date($scope.duties[i].date+$scope.duties[i].month+$scope.duties[i].year);
                     $scope.edit_data.index = i;
                     $scope.edit_modal.show();
                     // console.log($scope.edit_data);
